@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { GlassCard } from '@/components/ui/GlassCard';
-import { MOCK_USER } from '@/lib/mockData';
+import { useUser, SignOutButton } from '@clerk/nextjs';
 
 const NAV_ITEMS = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -34,20 +34,23 @@ const SECONDARY_NAV = [
 export const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
+  const { user } = useUser();
 
   const isActive = (href: string) => {
     return pathname.startsWith(href);
   };
 
   return (
-    <motion.aside
-      initial={{ x: -280 }}
-      animate={{ x: 0 }}
-      className={cn(
-        'fixed left-4 top-4 z-40 h-[calc(100vh-2rem)] transition-all duration-300',
-        collapsed ? 'w-20' : 'w-64'
-      )}
-    >
+    <>
+      {/* Mobile toggle logic omitted for brevity, just ensure it's hidden or absolute on small screens */}
+      <motion.aside
+        initial={{ x: -280 }}
+        animate={{ x: 0 }}
+        className={cn(
+          'fixed left-0 top-0 z-40 h-screen transition-all duration-300 md:left-4 md:top-4 md:h-[calc(100vh-2rem)] hidden md:flex',
+          collapsed ? 'w-20' : 'w-64'
+        )}
+      >
       <GlassCard className="h-full overflow-hidden flex flex-col p-6" variant="default">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -98,7 +101,7 @@ export const Sidebar = () => {
                     initial={false}
                     animate={{ opacity: collapsed ? 0 : 1, width: collapsed ? 0 : 'auto' }}
                     transition={{ duration: 0.2 }}
-                    className="overflow-hidden"
+                    className="overflow-hidden whitespace-nowrap"
                   >
                     {item.label}
                   </motion.span>
@@ -138,7 +141,7 @@ export const Sidebar = () => {
                     initial={false}
                     animate={{ opacity: collapsed ? 0 : 1, width: collapsed ? 0 : 'auto' }}
                     transition={{ duration: 0.2 }}
-                    className="overflow-hidden"
+                    className="overflow-hidden whitespace-nowrap"
                   >
                     {item.label}
                   </motion.span>
@@ -160,27 +163,31 @@ export const Sidebar = () => {
               transition={{ duration: 0.2 }}
               className="overflow-hidden flex-1 min-w-0"
             >
-              <p className="text-xs text-muted-foreground truncate">{MOCK_USER.tier}</p>
+              <p className="text-sm font-medium truncate text-white">{user?.fullName || 'User'}</p>
+              <p className="text-xs text-muted-foreground truncate">Member</p>
             </motion.div>
           </div>
         </div>
 
         {/* Logout */}
-        <motion.button
-          whileHover={{ x: 4 }}
-          className="w-full flex items-center gap-3 px-4 py-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors text-sm"
-        >
-          <LogOut className="w-4 h-4 flex-shrink-0" />
-          <motion.span
-            initial={false}
-            animate={{ opacity: collapsed ? 0 : 1, width: collapsed ? 0 : 'auto' }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden"
+        <SignOutButton>
+          <motion.button
+            whileHover={{ x: 4 }}
+            className="w-full flex items-center gap-3 px-4 py-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors text-sm mt-2"
           >
-            Logout
-          </motion.span>
-        </motion.button>
+            <LogOut className="w-4 h-4 flex-shrink-0" />
+            <motion.span
+              initial={false}
+              animate={{ opacity: collapsed ? 0 : 1, width: collapsed ? 0 : 'auto' }}
+              transition={{ duration: 0.2 }}
+              className="overflow-hidden whitespace-nowrap"
+            >
+              Logout
+            </motion.span>
+          </motion.button>
+        </SignOutButton>
       </GlassCard>
     </motion.aside>
+    </>
   );
 };
