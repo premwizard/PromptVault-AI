@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../api';
 
 export interface Prompt {
@@ -20,6 +20,30 @@ export function usePrompts() {
     queryFn: async () => {
       const { data } = await api.get<Prompt[]>('/prompts');
       return data;
+    },
+  });
+}
+
+export interface CreatePromptData {
+  title: string;
+  content: string;
+  description?: string;
+  ai_model?: string;
+  category_id?: string;
+  collection_id?: string;
+  is_favorite?: boolean;
+}
+
+export function useCreatePrompt() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (newPrompt: CreatePromptData) => {
+      const { data } = await api.post<Prompt>('/prompts', newPrompt);
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['prompts'] });
     },
   });
 }

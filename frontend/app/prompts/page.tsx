@@ -2,13 +2,14 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Filter } from 'lucide-react';
+import { Search, Filter, Plus, PenLine } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { PromptCardTilt } from '@/components/ui/PromptCardTilt';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { usePrompts } from '@/lib/hooks/usePrompts';
 import { ANIMATIONS, PROMPT_CATEGORIES, AI_MODELS } from '@/lib/constants';
+import { CreatePromptModal } from '@/components/features/CreatePromptModal';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -34,6 +35,7 @@ export default function PromptsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data: prompts = [], isLoading, isError } = usePrompts();
 
@@ -54,9 +56,18 @@ export default function PromptsPage() {
         className="space-y-8"
       >
         {/* Header */}
-        <motion.div variants={itemVariants}>
-          <h1 className="text-4xl font-bold mb-2">Prompt Library</h1>
-          <p className="text-muted-foreground">Browse and manage your prompt collection</p>
+        <motion.div variants={itemVariants} className="flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold mb-2">Prompt Library</h1>
+            <p className="text-muted-foreground">Browse and manage your prompt collection</p>
+          </div>
+          <Button 
+            className="bg-accent-blue text-white hover:bg-accent-blue/90 shadow-[0_0_15px_rgba(59,130,246,0.5)] hover:shadow-[0_0_25px_rgba(59,130,246,0.6)] transition-all"
+            onClick={() => setIsModalOpen(true)}
+          >
+            <Plus className="w-5 h-5 mr-2" />
+            New Prompt
+          </Button>
         </motion.div>
 
         {/* Search and Filters */}
@@ -162,7 +173,7 @@ export default function PromptsPage() {
             </motion.div>
           )}
 
-          {!isLoading && filteredPrompts.length === 0 && !isError && (
+          {!isLoading && prompts.length > 0 && filteredPrompts.length === 0 && !isError && (
             <div className="text-center py-16 px-4 rounded-2xl border border-white/5 bg-white/[0.02] mt-8">
               <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4 border border-white/10">
                 <Search className="w-8 h-8 text-white/20" />
@@ -173,8 +184,33 @@ export default function PromptsPage() {
               </p>
             </div>
           )}
+
+          {!isLoading && prompts.length === 0 && !isError && (
+            <div className="text-center py-20 px-4 rounded-2xl border border-white/5 bg-white/[0.02] mt-8 flex flex-col items-center">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-accent-blue/20 to-accent-purple/20 flex items-center justify-center mx-auto mb-6 border border-white/10 shadow-[0_0_30px_rgba(167,139,250,0.1)]">
+                <PenLine className="w-10 h-10 text-accent-blue" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-3">You haven't created any prompts yet</h3>
+              <p className="text-muted-foreground max-w-md mx-auto mb-8 text-lg">
+                Start building your personal AI prompt library to save, organize, and quickly reuse your most effective interactions.
+              </p>
+              <Button 
+                size="lg"
+                className="bg-accent-blue text-white hover:bg-accent-blue/90 shadow-[0_0_20px_rgba(59,130,246,0.4)] text-base h-12 px-8"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <Plus className="w-5 h-5 mr-2" />
+                Create Your First Prompt
+              </Button>
+            </div>
+          )}
         </motion.div>
       </motion.div>
+
+      <CreatePromptModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }
