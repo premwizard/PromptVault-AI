@@ -114,7 +114,7 @@ export default function DashboardPage() {
             {statsLoading ? (
               // Skeleton Loaders
               Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="h-[200px] rounded-2xl bg-white/5 animate-pulse border border-white/5" />
+                <div key={i} className="h-[280px] rounded-2xl bg-white/5 animate-pulse border border-white/5" />
               ))
             ) : favoritePrompts.length > 0 ? (
               favoritePrompts.map((prompt) => (

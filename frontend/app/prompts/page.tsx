@@ -156,7 +156,7 @@ export default function PromptsPage() {
           {isLoading && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="h-64 rounded-2xl bg-white/5 animate-pulse border border-white/5" />
+                <div key={i} className="h-[280px] rounded-2xl bg-white/5 animate-pulse border border-white/5" />
               ))}
             </div>
           )}

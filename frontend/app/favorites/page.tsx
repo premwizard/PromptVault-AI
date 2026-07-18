@@ -1,11 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
-import { PromptCard } from '@/components/ui/PromptCard';
-import { usePrompts } from '@/lib/hooks/usePrompts';
+import { PromptCardTilt } from '@/components/ui/PromptCardTilt';
+import { usePrompts, useDeletePrompt, Prompt } from '@/lib/hooks/usePrompts';
 import { ANIMATIONS } from '@/lib/constants';
+import { CreatePromptModal } from '@/components/features/CreatePromptModal';
+import { ViewPromptModal } from '@/components/features/ViewPromptModal';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -29,9 +31,31 @@ const itemVariants = {
 
 export default function FavoritesPage() {
   const { data: prompts = [], isLoading, isError } = usePrompts();
+  const deletePrompt = useDeletePrompt();
   
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [promptToEdit, setPromptToEdit] = useState<Prompt | null>(null);
+  const [promptToView, setPromptToView] = useState<Prompt | null>(null);
+
   // Right now favorites is mocked by grabbing the first 3 prompts or any favorited ones.
   const favorites = prompts.slice(0, 3); // Temporarily mapped
+
+  const handleEdit = (prompt: Prompt) => {
+    setPromptToEdit(prompt);
+    setIsModalOpen(true);
+  };
+
+  const handleView = (prompt: Prompt) => {
+    setPromptToView(prompt);
+    setIsViewModalOpen(true);
+  };
+
+  const handleDelete = (id: string) => {
+    if (window.confirm('Are you sure you want to delete this prompt?')) {
+      deletePrompt.mutate(id);
+    }
+  };
 
   return (
     <div className="p-8">
@@ -55,7 +79,7 @@ export default function FavoritesPage() {
         {isLoading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-64 rounded-2xl bg-white/5 animate-pulse border border-white/5" />
+               <div key={i} className="h-[280px] rounded-2xl bg-white/5 animate-pulse border border-white/5" />
             ))}
           </div>
         )}
@@ -80,7 +104,7 @@ export default function FavoritesPage() {
           >
             {favorites.map((prompt) => (
               <motion.div key={prompt.id} variants={itemVariants}>
-                <PromptCard
+                <PromptCardTilt
                   title={prompt.title}
                   description={prompt.description}
                   category={prompt.category?.name || "Uncategorized"}
@@ -88,6 +112,9 @@ export default function FavoritesPage() {
                   tags={prompt.tags.map(t => t.name)}
                   favorited={true}
                   usageCount={prompt.usage_count}
+                  onClick={() => handleView(prompt)}
+                  onEdit={() => handleEdit(prompt)}
+                  onDelete={() => handleDelete(prompt.id)}
                 />
               </motion.div>
             ))}
@@ -106,6 +133,23 @@ export default function FavoritesPage() {
           </div>
         )}
       </motion.div>
+
+      <CreatePromptModal 
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setPromptToEdit(null);
+        }}
+        promptToEdit={promptToEdit}
+      />
+      <ViewPromptModal
+        isOpen={isViewModalOpen}
+        onClose={() => {
+          setIsViewModalOpen(false);
+          setPromptToView(null);
+        }}
+        prompt={promptToView}
+      />
     </div>
   );
 }
