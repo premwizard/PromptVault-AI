@@ -4,6 +4,9 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { clerkMiddleware } from '@clerk/express';
 import { PrismaClient } from '@prisma/client';
+import { errorHandler } from './middleware/error';
+import { requestIdMiddleware, requestLoggerMiddleware } from './middleware/request';
+import { logger } from './utils/logger';
 
 // Load environment variables
 dotenv.config();
@@ -17,6 +20,8 @@ export const prisma = new PrismaClient();
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+app.use(requestIdMiddleware);
+app.use(requestLoggerMiddleware);
 
 // Add Clerk middleware for authentication
 app.use(clerkMiddleware());
@@ -31,11 +36,8 @@ app.get('/health', (req, res) => {
 // app.use('/api', apiRoutes);
 
 // Global Error Handler
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Internal Server Error' });
-});
+app.use(errorHandler);
 
 app.listen(port, () => {
-  console.log(`Backend server running on http://localhost:${port}`);
+  logger.info(`Backend server running on http://localhost:${port}`);
 });

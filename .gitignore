@@ -5,8 +5,6 @@ pnpm-lock.yaml
 pnpm-lock.yaml
 package-lock.json
 .next
-
-
 /frontend/node_modules
 /frontend/package-lock.json
 /frontend/pnpm-lock.yaml
