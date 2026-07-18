@@ -88,27 +88,27 @@ export const Sidebar = () => {
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: idx * 0.05 }}
-                  whileHover={{ x: 4 }}
+                  whileHover={{ x: 4, backgroundColor: 'rgba(255,255,255,0.05)' }}
                   className={cn(
-                    'w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors relative',
+                    'w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all relative group',
                     active
-                      ? 'bg-accent-blue/20 text-accent-blue'
-                      : 'text-muted-foreground hover:bg-white/5 hover:text-foreground'
+                      ? 'bg-white/10 text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)]'
+                      : 'text-muted-foreground hover:text-white'
                   )}
                 >
-                  <Icon className="w-5 h-5 flex-shrink-0" />
+                  <Icon className={cn("w-5 h-5 flex-shrink-0 transition-colors", active ? "text-accent-blue" : "group-hover:text-accent-purple")} />
                   <motion.span
                     initial={false}
                     animate={{ opacity: collapsed ? 0 : 1, width: collapsed ? 0 : 'auto' }}
                     transition={{ duration: 0.2 }}
-                    className="overflow-hidden whitespace-nowrap"
+                    className="overflow-hidden whitespace-nowrap font-medium"
                   >
                     {item.label}
                   </motion.span>
                   {active && !collapsed && (
                     <motion.div
                       layoutId="activeIndicator"
-                      className="absolute right-0 w-1 h-8 bg-accent-blue rounded-l-full"
+                      className="absolute right-0 w-1.5 h-6 bg-gradient-to-b from-accent-blue to-accent-purple rounded-l-full shadow-[0_0_10px_rgba(167,139,250,0.8)]"
                     />
                   )}
                 </motion.button>

@@ -124,14 +124,18 @@ export default function PromptsPage() {
           {isLoading && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="h-64 rounded-xl bg-white/5 animate-pulse" />
+                <div key={i} className="h-64 rounded-2xl bg-white/5 animate-pulse border border-white/5" />
               ))}
             </div>
           )}
           
           {isError && (
-             <div className="text-center py-12">
-               <p className="text-red-400">Failed to load prompts. Please try again later.</p>
+             <div className="text-center py-16 px-4 rounded-2xl border border-red-500/20 bg-red-500/5">
+               <div className="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4 border border-red-500/20">
+                 <Filter className="w-8 h-8 text-red-400" />
+               </div>
+               <p className="text-red-400 font-medium">Failed to load prompts.</p>
+               <p className="text-muted-foreground text-sm mt-2">Please try refreshing the page or check your connection.</p>
              </div>
           )}
 
@@ -159,8 +163,14 @@ export default function PromptsPage() {
           )}
 
           {!isLoading && filteredPrompts.length === 0 && !isError && (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">No prompts found matching your criteria</p>
+            <div className="text-center py-16 px-4 rounded-2xl border border-white/5 bg-white/[0.02] mt-8">
+              <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4 border border-white/10">
+                <Search className="w-8 h-8 text-white/20" />
+              </div>
+              <h3 className="text-lg font-medium text-white mb-2">No prompts found</h3>
+              <p className="text-muted-foreground max-w-sm mx-auto">
+                Try adjusting your search criteria or clear your filters to find what you're looking for.
+              </p>
             </div>
           )}
         </motion.div>
