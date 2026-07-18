@@ -7,7 +7,9 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { PromptCardTilt } from '@/components/ui/PromptCardTilt';
 import { AnimatedStatCard } from '@/components/ui/AnimatedStatCard';
 import { Button } from '@/components/ui/button';
-import { MOCK_STATS, MOCK_PROMPTS, MOCK_USER } from '@/lib/mockData';
+import { useDashboardStats } from '@/lib/hooks/useDashboard';
+import { usePrompts } from '@/lib/hooks/usePrompts';
+import { useUser } from '@clerk/nextjs';
 import { ANIMATIONS } from '@/lib/constants';
 
 const containerVariants = {
@@ -31,7 +33,15 @@ const itemVariants = {
 };
 
 export default function DashboardPage() {
-  const favoritePrompts = MOCK_PROMPTS.filter(p => p.favorited).slice(0, 3);
+  const { user } = useUser();
+  const { data: stats, isLoading: statsLoading } = useDashboardStats();
+  const { data: prompts = [] } = usePrompts();
+  
+  // We can derive favorites from prompts, or they might come from a different endpoint.
+  // Assuming prompts has a favorited status or we just grab top 3 for now.
+  const favoritePrompts = prompts.slice(0, 3); // Modify this later if favorited is a field
+  
+  const firstName = user?.firstName || 'User';
 
   return (
     <div className="p-8">
@@ -44,9 +54,9 @@ export default function DashboardPage() {
         {/* Welcome Header */}
         <motion.div variants={itemVariants}>
           <h1 className="text-4xl font-bold mb-2">
-            Welcome back, <span className="bg-gradient-to-r from-accent-blue to-accent-purple bg-clip-text text-transparent">{MOCK_USER.name.split(' ')[0]}</span>
+            Welcome back, <span className="bg-gradient-to-r from-accent-blue to-accent-purple bg-clip-text text-transparent">{firstName}</span>
           </h1>
-          <p className="text-muted-foreground">You have {MOCK_STATS.totalPrompts} prompts in your vault</p>
+          <p className="text-muted-foreground">You have {stats?.totalPrompts || 0} prompts in your vault</p>
         </motion.div>
 
         {/* Statistics Grid */}
@@ -54,34 +64,32 @@ export default function DashboardPage() {
           <AnimatedStatCard
             icon={Sparkles}
             label="Total Prompts"
-            value={MOCK_STATS.totalPrompts}
+            value={stats?.totalPrompts || 0}
             color="blue"
             trend={12}
           />
           <AnimatedStatCard
             icon={Heart}
             label="Favorites"
-            value={MOCK_STATS.favoritePrompts}
+            value={stats?.favoritePrompts || 0}
             color="purple"
             trend={3}
           />
           <AnimatedStatCard
             icon={TrendingUp}
             label="This Month"
-            value={MOCK_STATS.usageThisMonth}
+            value={stats?.usageThisMonth || 0}
             color="green"
-            trend={Math.round(((MOCK_STATS.usageThisMonth - MOCK_STATS.usageLastMonth) / MOCK_STATS.usageLastMonth) * 100)}
+            trend={stats?.usageLastMonth ? Math.round(((stats.usageThisMonth - stats.usageLastMonth) / stats.usageLastMonth) * 100) : 0}
           />
           <AnimatedStatCard
             icon={Zap}
             label="Time Saved"
-            value={`${MOCK_STATS.saveTimeHours}h`}
+            value={`${stats?.saveTimeHours || 0}h`}
             color="cyan"
             trend={24}
           />
         </motion.div>
-
-
 
         {/* Favorites Section */}
         <motion.div variants={itemVariants}>
@@ -108,14 +116,20 @@ export default function DashboardPage() {
                 <PromptCardTilt
                   title={prompt.title}
                   description={prompt.description}
-                  category={prompt.category}
-                  aiModel={prompt.aiModel}
-                  tags={prompt.tags}
-                  favorited={prompt.favorited}
-                  usageCount={prompt.usageCount}
+                  category={prompt.category?.name || "Uncategorized"}
+                  aiModel={prompt.ai_model}
+                  tags={prompt.tags?.map(t => t.name) || []}
+                  favorited={true}
+                  usageCount={prompt.usage_count}
                 />
               </motion.div>
             ))}
+            
+            {favoritePrompts.length === 0 && (
+              <div className="col-span-1 md:col-span-3 text-center py-12">
+                <p className="text-muted-foreground">You don't have any favorite prompts yet.</p>
+              </div>
+            )}
           </motion.div>
         </motion.div>
 
@@ -132,11 +146,7 @@ export default function DashboardPage() {
           </div>
           <GlassCard className="p-6">
             <div className="space-y-4">
-              {[
-                { action: 'Created prompt', item: 'SEO Blog Post Writer', time: '2 hours ago' },
-                { action: 'Favorited', item: 'Code Reviewer', time: '5 hours ago' },
-                { action: 'Updated', item: 'Data Analyst Assistant', time: '1 day ago' },
-              ].map((activity, idx) => (
+              {stats?.recentActivity?.length ? stats.recentActivity.map((activity, idx) => (
                 <div key={idx} className="flex items-center justify-between py-3 border-b border-white/10 last:border-b-0">
                   <div>
                     <p className="text-foreground font-medium">{activity.action}</p>
@@ -144,7 +154,9 @@ export default function DashboardPage() {
                   </div>
                   <span className="text-xs text-muted-foreground">{activity.time}</span>
                 </div>
-              ))}
+              )) : (
+                <p className="text-muted-foreground">No recent activity.</p>
+              )}
             </div>
           </GlassCard>
         </motion.div>

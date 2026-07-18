@@ -17,9 +17,11 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_headers=["*"],
     )
 
+from app.api.api import api_router
+
 @app.get("/")
 def read_root():
     return {"message": "Welcome to PromptVault AI API"}
 
-# We will include routers here later
-# app.include_router(api_router, prefix=settings.API_V1_STR)
+# Include routers
+app.include_router(api_router, prefix=settings.API_V1_STR)

@@ -7,7 +7,7 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { PromptCardTilt } from '@/components/ui/PromptCardTilt';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { MOCK_PROMPTS } from '@/lib/mockData';
+import { usePrompts } from '@/lib/hooks/usePrompts';
 import { ANIMATIONS, PROMPT_CATEGORIES, AI_MODELS } from '@/lib/constants';
 
 const containerVariants = {
@@ -35,11 +35,13 @@ export default function PromptsPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
 
-  const filteredPrompts = MOCK_PROMPTS.filter(prompt => {
+  const { data: prompts = [], isLoading, isError } = usePrompts();
+
+  const filteredPrompts = prompts.filter(prompt => {
     const matchesSearch = prompt.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       prompt.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = !selectedCategory || prompt.category === selectedCategory;
-    const matchesModel = !selectedModel || prompt.aiModel === selectedModel;
+    const matchesCategory = !selectedCategory || prompt.category?.name === selectedCategory;
+    const matchesModel = !selectedModel || prompt.ai_model === selectedModel;
     return matchesSearch && matchesCategory && matchesModel;
   });
 
@@ -115,31 +117,48 @@ export default function PromptsPage() {
         <motion.div variants={itemVariants}>
           <div className="mb-4 flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
-              Showing {filteredPrompts.length} of {MOCK_PROMPTS.length} prompts
+              {isLoading ? "Loading prompts..." : `Showing ${filteredPrompts.length} of ${prompts.length} prompts`}
             </p>
           </div>
-          <motion.div
-            initial="hidden"
-            animate="show"
-            variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {filteredPrompts.map((prompt) => (
-              <motion.div key={prompt.id} variants={itemVariants}>
-                <PromptCardTilt
-                  title={prompt.title}
-                  description={prompt.description}
-                  category={prompt.category}
-                  aiModel={prompt.aiModel}
-                  tags={prompt.tags}
-                  favorited={prompt.favorited}
-                  usageCount={prompt.usageCount}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
+          
+          {isLoading && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="h-64 rounded-xl bg-white/5 animate-pulse" />
+              ))}
+            </div>
+          )}
+          
+          {isError && (
+             <div className="text-center py-12">
+               <p className="text-red-400">Failed to load prompts. Please try again later.</p>
+             </div>
+          )}
 
-          {filteredPrompts.length === 0 && (
+          {!isLoading && !isError && (
+            <motion.div
+              initial="hidden"
+              animate="show"
+              variants={containerVariants}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {filteredPrompts.map((prompt) => (
+                <motion.div key={prompt.id} variants={itemVariants}>
+                  <PromptCardTilt
+                    title={prompt.title}
+                    description={prompt.description}
+                    category={prompt.category?.name || "Uncategorized"}
+                    aiModel={prompt.ai_model}
+                    tags={prompt.tags.map(t => t.name)}
+                    favorited={false}
+                    usageCount={prompt.usage_count}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+
+          {!isLoading && filteredPrompts.length === 0 && !isError && (
             <div className="text-center py-12">
               <p className="text-muted-foreground">No prompts found matching your criteria</p>
             </div>

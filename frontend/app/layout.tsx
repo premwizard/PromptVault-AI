@@ -2,6 +2,7 @@ import { Analytics } from '@vercel/analytics/next';
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { AnimatedBackground } from '@/components/ui/AnimatedBackground';
+import QueryProvider from '@/components/providers/QueryProvider';
 import './globals.css';
 
 const geistSans = Geist({ subsets: ['latin'] });
@@ -37,10 +38,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-background dark">
       <body className={`${geistSans.className} antialiased bg-background text-foreground relative`}>
-        <AnimatedBackground />
-        <div className="relative z-0">
-          {children}
-        </div>
+        <QueryProvider>
+          <AnimatedBackground />
+          <div className="relative z-0">
+            {children}
+          </div>
+        </QueryProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

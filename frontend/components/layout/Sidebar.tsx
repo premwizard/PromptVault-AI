@@ -152,7 +152,7 @@ export const Sidebar = () => {
         <div className="pt-4 border-t border-white/10">
           <div className="flex items-center gap-3 p-2">
             <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-blue to-accent-purple flex-shrink-0 flex items-center justify-center text-white font-bold">
-              {MOCK_USER.name.charAt(0)}
+              {user?.firstName?.charAt(0) || 'U'}
             </div>
             <motion.div
               initial={false}
@@ -160,7 +160,6 @@ export const Sidebar = () => {
               transition={{ duration: 0.2 }}
               className="overflow-hidden flex-1 min-w-0"
             >
-              <p className="text-sm font-medium truncate">{MOCK_USER.name}</p>
               <p className="text-xs text-muted-foreground truncate">{MOCK_USER.tier}</p>
             </motion.div>
           </div>
