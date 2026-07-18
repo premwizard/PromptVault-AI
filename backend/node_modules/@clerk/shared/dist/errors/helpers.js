@@ -1,0 +1,140 @@
+const require_clerkApiResponseError = require('./clerkApiResponseError.js');
+const require_clerkRuntimeError = require('./clerkRuntimeError.js');
+
+//#region src/errors/helpers.ts
+/**
+* Checks if the provided error object is an unauthorized error.
+*
+* @internal
+*
+* @deprecated This is no longer used, and will be removed in the next major version.
+*/
+function isUnauthorizedError(e) {
+	const status = e?.status;
+	return e?.errors?.[0]?.code === "authentication_invalid" && status === 401;
+}
+/**
+* Checks if the provided error object is a captcha error.
+*
+* @internal
+*/
+function isCaptchaError(e) {
+	return [
+		"captcha_invalid",
+		"captcha_not_enabled",
+		"captcha_missing_token"
+	].includes(e.errors[0].code);
+}
+/**
+* Checks if the provided error is a 4xx error.
+*
+* @internal
+*/
+function is4xxError(e) {
+	const status = e?.status;
+	return !!status && status >= 400 && status < 500;
+}
+/**
+* Checks if the provided error is a 429 (Too Many Requests) error.
+*
+* @internal
+*/
+function is429Error(e) {
+	return e?.status === 429;
+}
+const unauthenticated403ErrorCodes = new Set(["user_banned", "user_deactivated"]);
+/**
+* Checks if the provided error indicates the user's session is no longer valid
+* and should trigger the unauthenticated flow (e.g. sign-out / redirect to sign-in).
+*
+* Only matches explicit authentication failure status codes:
+* - 401: session is invalid or expired
+* - 422: invalid session state (e.g. missing_expired_token)
+* - 403: terminal user state (e.g. user_banned, user_deactivated)
+*
+* 404 is intentionally excluded despite being returned for "session not found",
+* because it's also returned for unrelated resources (org not found, JWT template
+* not found) and shares the same `resource_not_found` error code, making it
+* impossible to distinguish. Session-not-found 401s are already handled directly
+* by Base._fetch.
+*
+* @internal
+*/
+function isUnauthenticatedError(e) {
+	const status = e?.status;
+	const hasTerminalUserErrorCode = Array.isArray(e?.errors) && e.errors.some((error) => unauthenticated403ErrorCodes.has(error?.code));
+	return status === 401 || status === 422 || status === 403 && hasTerminalUserErrorCode;
+}
+/**
+* Checks if the provided error is a network error.
+*
+* @internal
+*/
+function isNetworkError(e) {
+	return (`${e.message}${e.name}` || "").toLowerCase().replace(/\s+/g, "").includes("networkerror");
+}
+/**
+* Checks if the provided error is either a ClerkAPIResponseError, a ClerkRuntimeError, or a MetamaskError.
+*/
+function isKnownError(error) {
+	return require_clerkApiResponseError.isClerkAPIResponseError(error) || isMetamaskError(error) || require_clerkRuntimeError.isClerkRuntimeError(error);
+}
+/**
+* Checks if the provided error is a Clerk runtime error indicating a reverification was cancelled.
+*/
+function isReverificationCancelledError(err) {
+	return require_clerkRuntimeError.isClerkRuntimeError(err) && err.code === "reverification_cancelled";
+}
+/**
+* Checks if the provided error is a Metamask error.
+*/
+function isMetamaskError(err) {
+	return "code" in err && [
+		4001,
+		32602,
+		32603
+	].includes(err.code) && "message" in err;
+}
+/**
+* Checks if the provided error is clerk api response error indicating a user is locked.
+*/
+function isUserLockedError(err) {
+	return require_clerkApiResponseError.isClerkAPIResponseError(err) && err.errors?.[0]?.code === "user_locked";
+}
+/**
+* Checks if the provided error is a clerk api response error indicating a password was pwned.
+*
+* @internal
+*/
+function isPasswordPwnedError(err) {
+	return require_clerkApiResponseError.isClerkAPIResponseError(err) && err.errors?.[0]?.code === "form_password_pwned";
+}
+/**
+* Checks if the provided error is a clerk api response error indicating a password was compromised.
+*
+* @internal
+*/
+function isPasswordCompromisedError(err) {
+	return require_clerkApiResponseError.isClerkAPIResponseError(err) && err.errors?.[0]?.code === "form_password_compromised";
+}
+/**
+* Checks if the provided error is an EmailLinkError.
+*/
+function isEmailLinkError(err) {
+	return err.name === "EmailLinkError";
+}
+
+//#endregion
+exports.is429Error = is429Error;
+exports.is4xxError = is4xxError;
+exports.isCaptchaError = isCaptchaError;
+exports.isEmailLinkError = isEmailLinkError;
+exports.isKnownError = isKnownError;
+exports.isMetamaskError = isMetamaskError;
+exports.isNetworkError = isNetworkError;
+exports.isPasswordCompromisedError = isPasswordCompromisedError;
+exports.isPasswordPwnedError = isPasswordPwnedError;
+exports.isReverificationCancelledError = isReverificationCancelledError;
+exports.isUnauthenticatedError = isUnauthenticatedError;
+exports.isUnauthorizedError = isUnauthorizedError;
+exports.isUserLockedError = isUserLockedError;

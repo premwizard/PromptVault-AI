@@ -1,0 +1,224 @@
+import { SignInResource } from "./signIn.js";
+import { UserResource } from "./user.js";
+import { CheckAuthorizationWithCustomPermissions, GetToken, SessionResource, SignedInSessionResource } from "./session.js";
+import { OrganizationCustomRoleKey } from "./organizationMembership.js";
+import { ActClaim, JwtPayload } from "./jwtv2.js";
+import { SignUpResource } from "./signUp.js";
+import { SetActive, SignOut } from "./clerk.js";
+
+//#region src/types/hooks.d.ts
+/**
+ * @inline
+ */
+type CheckAuthorizationWithoutOrgOrUser = (params: Parameters<CheckAuthorizationWithCustomPermissions>[0]) => false;
+/**
+ * @inline
+ */
+type CheckAuthorizationSignedOut = CheckAuthorizationWithoutOrgOrUser;
+/**
+ * @inline
+ */
+type UseAuthReturn = {
+  /**
+   * Indicates whether Clerk has loaded the current authentication state. Initially `false`, becomes `true` once Clerk loads, and can revert to `false` while auth state is updating (for example, when switching organizations via [`setActive()`](https://clerk.com/docs/reference/objects/clerk#set-active)).
+   */
+  isLoaded: false;
+  /**
+   * Indicates whether a user is currently signed in.
+   */
+  isSignedIn: undefined;
+  /**
+   * The ID of the current user.
+   */
+  userId: undefined;
+  /**
+   * The ID for the current session.
+   */
+  sessionId: undefined;
+  /**
+   * The current user's [session claims](https://clerk.com/docs/guides/sessions/session-tokens).
+   */
+  sessionClaims: undefined;
+  /**
+   * The JWT actor for the session. Read more about [impersonation](https://clerk.com/docs/guides/users/impersonation).
+   */
+  actor: undefined;
+  /**
+   * The ID of the user's active Organization.
+   */
+  orgId: undefined;
+  /**
+   * The current user's Role in their active Organization.
+   */
+  orgRole: undefined;
+  /**
+   * The URL-friendly identifier of the user's Active Organization.
+   */
+  orgSlug: undefined;
+  /**
+   * A function that checks if the user has specific Permissions or Roles. See the [reference doc](https://clerk.com/docs/reference/backend/types/auth-object#has).
+   */
+  has: CheckAuthorizationSignedOut;
+  /**
+   * A function that signs out the current user. Returns a promise that resolves when complete. See the [reference doc](https://clerk.com/docs/reference/objects/clerk#sign-out).
+   */
+  signOut: SignOut;
+  /**
+   * A function that retrieves the current user's session token or a custom JWT template. Returns a promise that resolves to the token. See the [reference doc](https://clerk.com/docs/reference/objects/session#get-token).
+   */
+  getToken: GetToken;
+} | {
+  isLoaded: true;
+  isSignedIn: false;
+  userId: null;
+  sessionId: null;
+  sessionClaims: null;
+  actor: null;
+  orgId: null;
+  orgRole: null;
+  orgSlug: null;
+  has: CheckAuthorizationWithoutOrgOrUser;
+  signOut: SignOut;
+  getToken: GetToken;
+} | {
+  isLoaded: true;
+  isSignedIn: true;
+  userId: string;
+  sessionId: string;
+  sessionClaims: JwtPayload;
+  actor: ActClaim | null;
+  orgId: null;
+  orgRole: null;
+  orgSlug: null;
+  has: CheckAuthorizationWithCustomPermissions;
+  signOut: SignOut;
+  getToken: GetToken;
+} | {
+  isLoaded: true;
+  isSignedIn: true;
+  userId: string;
+  sessionId: string;
+  sessionClaims: JwtPayload;
+  actor: ActClaim | null;
+  orgId: string;
+  orgRole: OrganizationCustomRoleKey;
+  orgSlug: string | null;
+  has: CheckAuthorizationWithCustomPermissions;
+  signOut: SignOut;
+  getToken: GetToken;
+};
+/**
+ * @inline
+ */
+type UseSignInReturn = {
+  /**
+   * Indicates whether Clerk has loaded the current authentication state. Initially `false`, becomes `true` once Clerk loads, and can revert to `false` while auth state is updating (for example, when switching organizations via [`setActive()`](https://clerk.com/docs/reference/objects/clerk#set-active)).
+   */
+  isLoaded: false;
+  /**
+   * An object that contains the current sign-in attempt status and methods to create a new sign-in attempt.
+   */
+  signIn: undefined;
+  /**
+   * A function that sets the active session. See the [reference doc](https://clerk.com/docs/reference/objects/clerk#set-active).
+   */
+  setActive: undefined;
+} | {
+  isLoaded: true;
+  signIn: SignInResource;
+  setActive: SetActive;
+};
+/**
+ * @inline
+ */
+type UseSignUpReturn = {
+  /**
+   * Indicates whether Clerk has loaded the current authentication state. Initially `false`, becomes `true` once Clerk loads, and can revert to `false` while auth state is updating (for example, when switching organizations via [`setActive()`](https://clerk.com/docs/reference/objects/clerk#set-active)).
+   */
+  isLoaded: false;
+  /**
+   * An object that contains the current sign-up attempt status and methods to create a new sign-up attempt.
+   */
+  signUp: undefined;
+  /**
+   * A function that sets the active session. See the [reference doc](https://clerk.com/docs/reference/objects/clerk#set-active).
+   */
+  setActive: undefined;
+} | {
+  isLoaded: true;
+  signUp: SignUpResource;
+  setActive: SetActive;
+};
+/**
+ * @inline
+ */
+type UseSessionReturn = {
+  /**
+   * Indicates whether Clerk has loaded the current authentication state. Initially `false`, becomes `true` once Clerk loads, and can revert to `false` while auth state is updating (for example, when switching organizations via [`setActive()`](https://clerk.com/docs/reference/objects/clerk#set-active)).
+   */
+  isLoaded: false;
+  /**
+   * Indicates whether a user is currently signed in.
+   */
+  isSignedIn: undefined;
+  /**
+   * The current session for the user.
+   */
+  session: undefined;
+} | {
+  isLoaded: true;
+  isSignedIn: false;
+  session: null;
+} | {
+  isLoaded: true;
+  isSignedIn: boolean;
+  session: SignedInSessionResource;
+};
+/**
+ * @inline
+ */
+type UseSessionListReturn = {
+  /**
+   * Indicates whether Clerk has loaded the current authentication state. Initially `false`, becomes `true` once Clerk loads, and can revert to `false` while auth state is updating (for example, when switching organizations via [`setActive()`](https://clerk.com/docs/reference/objects/clerk#set-active)).
+   */
+  isLoaded: false;
+  /**
+   * A list of sessions that have been registered on the client device.
+   */
+  sessions: undefined;
+  /**
+   * A function that sets the active session and/or Organization. See the [reference doc](https://clerk.com/docs/reference/objects/clerk#set-active).
+   */
+  setActive: undefined;
+} | {
+  isLoaded: true;
+  sessions: SessionResource[];
+  setActive: SetActive;
+};
+/**
+ * @inline
+ */
+type UseUserReturn = {
+  /**
+   * Indicates whether Clerk has loaded the current authentication state. Initially `false`, becomes `true` once Clerk loads, and can revert to `false` while auth state is updating (for example, when switching organizations via [`setActive()`](https://clerk.com/docs/reference/objects/clerk#set-active)).
+   */
+  isLoaded: false;
+  /**
+   * Indicates whether the user is signed in.
+   */
+  isSignedIn: undefined;
+  /**
+   * The `User` object for the current user.
+   */
+  user: undefined;
+} | {
+  isLoaded: true;
+  isSignedIn: false;
+  user: null;
+} | {
+  isLoaded: true;
+  isSignedIn: true;
+  user: UserResource;
+};
+//#endregion
+export { UseAuthReturn, UseSessionListReturn, UseSessionReturn, UseSignInReturn, UseSignUpReturn, UseUserReturn };

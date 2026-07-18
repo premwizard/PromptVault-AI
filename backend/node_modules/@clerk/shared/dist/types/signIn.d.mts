@@ -1,0 +1,99 @@
+import { ClerkResource } from "./resource.mjs";
+import { ValidatePasswordCallbacks } from "./passwords.mjs";
+import { AuthenticateWithPopupParams, AuthenticateWithRedirectParams } from "./redirects.mjs";
+import { CreateEmailLinkFlowReturn, VerificationResource } from "./verification.mjs";
+import { AttemptFirstFactorParams, AttemptSecondFactorParams, AuthenticateWithPasskeyParams, PrepareFirstFactorParams, PrepareSecondFactorParams, ResetPasswordParams, SignInAuthenticateWithSolanaParams, SignInCreateParams, SignInFirstFactor, SignInIdentifier, SignInSecondFactor, SignInStartEmailLinkFlowParams, SignInStatus, UserData } from "./signInCommon.mjs";
+import { ProtectCheckResource } from "./signUpCommon.mjs";
+import { SignInFutureResource } from "./signInFuture.mjs";
+import { AuthenticateWithWeb3Params } from "./web3Wallet.mjs";
+import { SignInJSONSnapshot } from "./snapshots.mjs";
+import { ClerkResourceJSON, ClientTrustState, ProtectCheckJSON, SignInFirstFactorJSON, SignInSecondFactorJSON, UserDataJSON, VerificationJSON } from "./json.mjs";
+
+//#region src/types/signIn.d.ts
+/**
+ * The `SignIn` object holds the state of the current sign-in and provides helper methods to navigate and complete the sign-in process. It is used to manage the sign-in lifecycle, including the first and second factor verification, and the creation of a new session.
+ */
+interface SignInResource extends ClerkResource {
+  /**
+   * The current status of the sign-in.
+   *
+   * The `'needs_protect_check'` status is only returned when Protect mid-flow challenges are
+   * explicitly enabled for the instance; upgrading the SDK alone does not enable it. When
+   * surfaced, run the challenge described by `protectCheck` and resolve it via
+   * `submitProtectCheck()`. The pre-built components handle this automatically.
+   */
+  status: SignInStatus | null;
+  /**
+   * @deprecated This attribute will be removed in the next major version.
+   */
+  supportedIdentifiers: SignInIdentifier[];
+  supportedFirstFactors: SignInFirstFactor[] | null;
+  supportedSecondFactors: SignInSecondFactor[] | null;
+  clientTrustState?: ClientTrustState;
+  firstFactorVerification: VerificationResource;
+  secondFactorVerification: VerificationResource;
+  identifier: string | null;
+  createdSessionId: string | null;
+  userData: UserData;
+  /**
+   * The current protect check challenge, if one is pending. Mid-flow fraud-prevention gate
+   * issued by Clerk Protect. When non-null, the client must load the SDK at `sdkUrl`, run the
+   * challenge with `token`, and submit the resulting proof token via `submitProtectCheck`.
+   * Only populated when Protect mid-flow challenges are explicitly enabled for the instance;
+   * upgrading the SDK alone does not enable it.
+   */
+  protectCheck: ProtectCheckResource | null;
+  create: (params: SignInCreateParams) => Promise<SignInResource>;
+  resetPassword: (params: ResetPasswordParams) => Promise<SignInResource>;
+  prepareFirstFactor: (params: PrepareFirstFactorParams) => Promise<SignInResource>;
+  attemptFirstFactor: (params: AttemptFirstFactorParams) => Promise<SignInResource>;
+  prepareSecondFactor: (params: PrepareSecondFactorParams) => Promise<SignInResource>;
+  attemptSecondFactor: (params: AttemptSecondFactorParams) => Promise<SignInResource>;
+  /**
+   * Submits a proof token to resolve a pending protect check challenge. The response may contain
+   * another `protectCheck` (a chained challenge) which must be resolved iteratively. After the
+   * gate clears, the client should retry the operation that was gated.
+   */
+  submitProtectCheck: (params: {
+    proofToken: string;
+  }) => Promise<SignInResource>;
+  authenticateWithRedirect: (params: AuthenticateWithRedirectParams) => Promise<void>;
+  authenticateWithPopup: (params: AuthenticateWithPopupParams) => Promise<void>;
+  authenticateWithWeb3: (params: AuthenticateWithWeb3Params) => Promise<SignInResource>;
+  authenticateWithMetamask: () => Promise<SignInResource>;
+  authenticateWithCoinbaseWallet: () => Promise<SignInResource>;
+  authenticateWithOKXWallet: () => Promise<SignInResource>;
+  authenticateWithBase: () => Promise<SignInResource>;
+  authenticateWithSolana: (params: SignInAuthenticateWithSolanaParams) => Promise<SignInResource>;
+  authenticateWithPasskey: (params?: AuthenticateWithPasskeyParams) => Promise<SignInResource>;
+  createEmailLinkFlow: () => CreateEmailLinkFlowReturn<SignInStartEmailLinkFlowParams, SignInResource>;
+  validatePassword: (password: string, callbacks?: ValidatePasswordCallbacks) => void;
+  /**
+   * @internal
+   */
+  __internal_toSnapshot: () => SignInJSONSnapshot;
+  /**
+   * @internal
+   */
+  __internal_future: SignInFutureResource;
+}
+interface SignInJSON extends ClerkResourceJSON {
+  object: 'sign_in';
+  id: string;
+  status: SignInStatus;
+  client_trust_state?: ClientTrustState;
+  /**
+   * @deprecated This attribute will be removed in the next major version.
+   */
+  supported_identifiers: SignInIdentifier[];
+  identifier: string;
+  user_data: UserDataJSON;
+  supported_first_factors: SignInFirstFactorJSON[];
+  supported_second_factors: SignInSecondFactorJSON[];
+  first_factor_verification: VerificationJSON | null;
+  second_factor_verification: VerificationJSON | null;
+  created_session_id: string | null;
+  protect_check?: ProtectCheckJSON | null;
+}
+//#endregion
+export { SignInJSON, SignInResource };

@@ -1,0 +1,19 @@
+//#region src/htmlSafeJson.ts
+const ESCAPE_REGEX = /[<>/\u2028\u2029]/g;
+/**
+* `JSON.stringify` that is safe to embed directly inside an HTML `<script>` element.
+*
+* `JSON.stringify` leaves `<`, `>` and `/` untouched, so a `<\/script>` substring in any
+* string value would break out of the surrounding script block (XSS). Escaping those
+* characters to their `\uXXXX` forms keeps the value byte-identical after `JSON.parse`
+* while preventing the HTML parser from terminating the element early.
+*/
+function htmlSafeJson(value) {
+	const json = JSON.stringify(value);
+	if (json === void 0) return "undefined";
+	return json.replace(ESCAPE_REGEX, (ch) => `\\u${ch.charCodeAt(0).toString(16).padStart(4, "0")}`);
+}
+
+//#endregion
+export { htmlSafeJson };
+//# sourceMappingURL=htmlSafeJson.mjs.map

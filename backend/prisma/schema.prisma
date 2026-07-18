@@ -1,0 +1,198 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  clerkId       String    @unique
+  email         String    @unique
+  name          String?
+  avatar        String?
+  tier          String    @default("Free")
+  bio           String?
+  joinedAt      DateTime  @default(now())
+  
+  prompts       Prompt[]
+  collections   Collection[]
+  favorites     Favorite[]
+  activityLogs  ActivityLog[]
+  searchHistory SearchHistory[]
+  settings      UserSettings?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Prompt {
+  id            String    @id @default(uuid())
+  title         String
+  description   String
+  content       String    @db.Text
+  aiModel       String
+  status        String    @default("Published") // Draft, Published, Archived
+  usageCount    Int       @default(0)
+  
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  categoryId    String?
+  category      Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  
+  collectionId  String?
+  collection    Collection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+  
+  tags          PromptTag[]
+  favorites     Favorite[]
+  versions      VersionHistory[]
+  pinnedBy      PinnedPrompt[]
+  viewedBy      RecentlyViewed[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastCopiedAt  DateTime?
+}
+
+model Category {
+  id            String    @id @default(uuid())
+  name          String    @unique
+  color         String?
+  icon          String?
+  order         Int       @default(0)
+  
+  prompts       Prompt[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Tag {
+  id            String    @id @default(uuid())
+  name          String    @unique
+  
+  prompts       PromptTag[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model PromptTag {
+  promptId      String
+  tagId         String
+  
+  prompt        Prompt    @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  tag           Tag       @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  
+  @@id([promptId, tagId])
+}
+
+model Collection {
+  id            String    @id @default(uuid())
+  name          String
+  description   String?
+  icon          String?
+  color         String?
+  
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  prompts       Prompt[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Favorite {
+  id            String    @id @default(uuid())
+  
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  promptId      String
+  prompt        Prompt    @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime  @default(now())
+  
+  @@unique([userId, promptId])
+}
+
+model VersionHistory {
+  id            String    @id @default(uuid())
+  versionNumber Int
+  content       String    @db.Text
+  
+  promptId      String
+  prompt        Prompt    @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime  @default(now())
+}
+
+model UserSettings {
+  id                String    @id @default(uuid())
+  theme             String    @default("system")
+  editorPreferences Json?
+  defaultAiModel    String?
+  autosave          Boolean   @default(true)
+  language          String    @default("en")
+  
+  userId            String    @unique
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model ActivityLog {
+  id            String    @id @default(uuid())
+  type          String
+  title         String
+  icon          String?
+  
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime  @default(now())
+}
+
+model SearchHistory {
+  id            String    @id @default(uuid())
+  query         String
+  filters       Json?
+  
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime  @default(now())
+}
+
+model PinnedPrompt {
+  id            String    @id @default(uuid())
+  
+  userId        String
+  promptId      String
+  prompt        Prompt    @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime  @default(now())
+  
+  @@unique([userId, promptId])
+}
+
+model RecentlyViewed {
+  id            String    @id @default(uuid())
+  
+  userId        String
+  promptId      String
+  prompt        Prompt    @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  
+  viewedAt      DateTime  @default(now())
+  
+  @@unique([userId, promptId])
+}

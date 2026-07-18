@@ -1,0 +1,14 @@
+import { ClerkAPIError, isClerkAPIError } from "./errors/clerkApiError.js";
+import { ClerkError, isClerkError } from "./errors/clerkError.js";
+import { ClerkAPIResponseError, isClerkAPIResponseError } from "./errors/clerkApiResponseError.js";
+import { ClerkRuntimeError, isClerkRuntimeError } from "./errors/clerkRuntimeError.js";
+import { createClerkGlobalHookError } from "./errors/globalHookError.js";
+import { errorToJSON, parseError, parseErrors } from "./errors/parseError.js";
+import { MissingExpiredTokenError } from "./errors/missingExpiredTokenError.js";
+import { ClerkOfflineError } from "./errors/clerkOfflineError.js";
+import { ErrorThrower, ErrorThrowerOptions, buildErrorThrower } from "./errors/errorThrower.js";
+import { EmailLinkError, EmailLinkErrorCode, EmailLinkErrorCodeStatus } from "./errors/emailLinkError.js";
+import { MetamaskError } from "./errors/metamaskError.js";
+import { ClerkWebAuthnError } from "./errors/webAuthNError.js";
+import { is429Error, is4xxError, isCaptchaError, isEmailLinkError, isKnownError, isMetamaskError, isNetworkError, isPasswordCompromisedError, isPasswordPwnedError, isReverificationCancelledError, isUnauthenticatedError, isUnauthorizedError, isUserLockedError } from "./errors/helpers.js";
+export { ClerkAPIError, ClerkAPIResponseError, ClerkError, ClerkOfflineError, ClerkRuntimeError, ClerkWebAuthnError, EmailLinkError, EmailLinkErrorCode, EmailLinkErrorCodeStatus, type ErrorThrower, type ErrorThrowerOptions, type MetamaskError, MissingExpiredTokenError, buildErrorThrower, createClerkGlobalHookError, errorToJSON, is429Error, is4xxError, isCaptchaError, isClerkAPIError, isClerkAPIResponseError, isClerkError, isClerkRuntimeError, isEmailLinkError, isKnownError, isMetamaskError, isNetworkError, isPasswordCompromisedError, isPasswordPwnedError, isReverificationCancelledError, isUnauthenticatedError, isUnauthorizedError, isUserLockedError, parseError, parseErrors };

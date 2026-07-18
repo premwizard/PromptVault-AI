@@ -1,0 +1,77 @@
+import { UseSessionReturn } from "../../types/hooks.mjs";
+//#region src/react/hooks/useSession.d.ts
+type UseSession = () => UseSessionReturn;
+/**
+ * The `useSession()` hook provides access to the current user's [`Session`](https://clerk.com/docs/reference/objects/session) object, as well as helpers for setting the active session.
+ *
+ * @unionReturnHeadings
+ * ["Loading", "Signed out", "Signed in"]
+ *
+ * @function
+ *
+ * @param [options] - An object containing options for the `useSession()` hook.
+ * @example
+ * ### Access the `Session` object
+ *
+ * The following example uses the `useSession()` hook to access the `Session` object, which has the `lastActiveAt` property. The `lastActiveAt` property is a `Date` object used to show the time the session was last active.
+ *
+ * <Tabs items='React,Next.js'>
+ * <Tab>
+ *
+ * ```tsx {{ filename: 'src/Home.tsx' }}
+ * import { useSession } from '@clerk/react'
+ *
+ * export default function Home() {
+ *   const { isLoaded, session, isSignedIn } = useSession()
+ *
+ *   if (!isLoaded) {
+ *     // Handle loading state
+ *     return null
+ *   }
+ *   if (!isSignedIn) {
+ *     // Handle signed out state
+ *     return null
+ *   }
+ *
+ *   return (
+ *     <div>
+ *       <p>This session has been active since {session.lastActiveAt.toLocaleString()}</p>
+ *     </div>
+ *   )
+ * }
+ * ```
+ *
+ * </Tab>
+ * <Tab>
+ *
+ * ```tsx {{ filename: 'app/page.tsx' }}
+ * 'use client';
+ *
+ * import { useSession } from '@clerk/nextjs';
+ *
+ * export default function HomePage() {
+ *   const { isLoaded, session, isSignedIn } = useSession();
+ *
+ *   if (!isLoaded) {
+ *     // Handle loading state
+ *     return null;
+ *   }
+ *   if (!isSignedIn) {
+ *     // Handle signed out state
+ *     return null;
+ *   }
+ *
+ *   return (
+ *     <div>
+ *       <p>This session has been active since {session.lastActiveAt.toLocaleString()}</p>
+ *     </div>
+ *   );
+ * }
+ * ```
+ *
+ * </Tab>
+ * </Tabs>
+ */
+declare const useSession: UseSession;
+//#endregion
+export { useSession };
