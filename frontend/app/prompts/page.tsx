@@ -7,9 +7,10 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { PromptCardTilt } from '@/components/ui/PromptCardTilt';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { usePrompts } from '@/lib/hooks/usePrompts';
+import { usePrompts, useDeletePrompt, Prompt } from '@/lib/hooks/usePrompts';
 import { ANIMATIONS, PROMPT_CATEGORIES, AI_MODELS } from '@/lib/constants';
 import { CreatePromptModal } from '@/components/features/CreatePromptModal';
+import { ViewPromptModal } from '@/components/features/ViewPromptModal';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -36,8 +37,28 @@ export default function PromptsPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [promptToEdit, setPromptToEdit] = useState<Prompt | null>(null);
+  const [promptToView, setPromptToView] = useState<Prompt | null>(null);
 
   const { data: prompts = [], isLoading, isError } = usePrompts();
+  const deletePrompt = useDeletePrompt();
+
+  const handleEdit = (prompt: Prompt) => {
+    setPromptToEdit(prompt);
+    setIsModalOpen(true);
+  };
+
+  const handleView = (prompt: Prompt) => {
+    setPromptToView(prompt);
+    setIsViewModalOpen(true);
+  };
+
+  const handleDelete = (id: string) => {
+    if (window.confirm('Are you sure you want to delete this prompt?')) {
+      deletePrompt.mutate(id);
+    }
+  };
 
   const filteredPrompts = prompts.filter(prompt => {
     const matchesSearch = prompt.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -167,6 +188,9 @@ export default function PromptsPage() {
                     tags={prompt.tags.map(t => t.name)}
                     favorited={false}
                     usageCount={prompt.usage_count}
+                    onClick={() => handleView(prompt)}
+                    onEdit={() => handleEdit(prompt)}
+                    onDelete={() => handleDelete(prompt.id)}
                   />
                 </motion.div>
               ))}
@@ -209,7 +233,19 @@ export default function PromptsPage() {
 
       <CreatePromptModal 
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          setPromptToEdit(null);
+        }}
+        promptToEdit={promptToEdit}
+      />
+      <ViewPromptModal
+        isOpen={isViewModalOpen}
+        onClose={() => {
+          setIsViewModalOpen(false);
+          setPromptToView(null);
+        }}
+        prompt={promptToView}
       />
     </div>
   );

@@ -47,3 +47,30 @@ export function useCreatePrompt() {
     },
   });
 }
+
+export function useUpdatePrompt() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: Partial<CreatePromptData> }) => {
+      const { data: responseData } = await api.put<Prompt>(`/prompts/${id}`, data);
+      return responseData;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['prompts'] });
+    },
+  });
+}
+
+export function useDeletePrompt() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      await api.delete(`/prompts/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['prompts'] });
+    },
+  });
+}

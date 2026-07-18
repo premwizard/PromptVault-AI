@@ -7,27 +7,48 @@ import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { PROMPT_CATEGORIES, AI_MODELS } from '@/lib/constants';
-import { useCreatePrompt, CreatePromptData } from '@/lib/hooks/usePrompts';
+import { useCreatePrompt, useUpdatePrompt, CreatePromptData, Prompt } from '@/lib/hooks/usePrompts';
 import { useCollections } from '@/lib/hooks/useCollections';
 
 interface CreatePromptModalProps {
   isOpen: boolean;
   onClose: () => void;
+  promptToEdit?: Prompt | null;
 }
 
-export const CreatePromptModal = ({ isOpen, onClose }: CreatePromptModalProps) => {
+export const CreatePromptModal = ({ isOpen, onClose, promptToEdit }: CreatePromptModalProps) => {
   const [formData, setFormData] = useState<CreatePromptData>({
-    title: '',
-    content: '',
-    description: '',
-    category_id: '',
-    collection_id: '',
-    ai_model: '',
-    is_favorite: false,
+    title: promptToEdit?.title || '',
+    content: promptToEdit?.content || '',
+    description: promptToEdit?.description || '',
+    category_id: promptToEdit?.category?.id || '',
+    collection_id: '', // Add collection logic if exists on prompt
+    ai_model: promptToEdit?.ai_model || '',
+    is_favorite: false, // Update if prompt has favorite flag
   });
+
+  // Effect to reset form when promptToEdit changes
+  React.useEffect(() => {
+    if (isOpen) {
+      setFormData({
+        title: promptToEdit?.title || '',
+        content: promptToEdit?.content || '',
+        description: promptToEdit?.description || '',
+        category_id: promptToEdit?.category?.id || '',
+        collection_id: '', 
+        ai_model: promptToEdit?.ai_model || '',
+        is_favorite: false,
+      });
+    }
+  }, [isOpen, promptToEdit]);
 
   const { data: collections = [] } = useCollections();
   const createPrompt = useCreatePrompt();
+  const updatePrompt = useUpdatePrompt();
+  const isEditMode = !!promptToEdit;
+  
+  const isPending = createPrompt.isPending || updatePrompt.isPending;
+  const isError = createPrompt.isError || updatePrompt.isError;
 
   const handleClose = () => {
     // Optional: add a confirmation if there's unsaved content
@@ -48,25 +69,22 @@ export const CreatePromptModal = ({ isOpen, onClose }: CreatePromptModalProps) =
     e.preventDefault();
     if (!formData.title || !formData.content) return;
 
-    createPrompt.mutate(formData, {
-      onSuccess: () => {
-        // Reset form
-        setFormData({
-          title: '',
-          content: '',
-          description: '',
-          category_id: '',
-          collection_id: '',
-          ai_model: '',
-          is_favorite: false,
-        });
-        onClose();
-        // Here we could trigger a success toast if we had a toast system
-      },
-      onError: (err) => {
-        console.error('Failed to create prompt', err);
-      }
-    });
+    const onSuccess = () => {
+      onClose();
+    };
+
+    const onError = (err: any) => {
+      console.error('Failed to save prompt', err);
+    };
+
+    if (isEditMode && promptToEdit) {
+      updatePrompt.mutate(
+        { id: promptToEdit.id, data: formData },
+        { onSuccess, onError }
+      );
+    } else {
+      createPrompt.mutate(formData, { onSuccess, onError });
+    }
   };
 
   const isFormValid = formData.title.trim() !== '' && formData.content.trim() !== '';
@@ -75,7 +93,7 @@ export const CreatePromptModal = ({ isOpen, onClose }: CreatePromptModalProps) =
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      title="Create New Prompt"
+      title={isEditMode ? "Edit Prompt" : "Create New Prompt"}
       className="sm:max-w-xl"
     >
       <form onSubmit={handleSubmit} className="space-y-5">
@@ -203,28 +221,28 @@ export const CreatePromptModal = ({ isOpen, onClose }: CreatePromptModalProps) =
             variant="ghost"
             onClick={handleClose}
             className="text-white/70 hover:text-white hover:bg-white/10"
-            disabled={createPrompt.isPending}
+            disabled={isPending}
           >
             Cancel
           </Button>
           <Button
             type="submit"
             className="bg-accent-blue text-white hover:bg-accent-blue/90"
-            disabled={!isFormValid || createPrompt.isPending}
+            disabled={!isFormValid || isPending}
           >
-            {createPrompt.isPending ? (
+            {isPending ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 Saving...
               </>
             ) : (
-              'Create Prompt'
+              isEditMode ? 'Save Changes' : 'Create Prompt'
             )}
           </Button>
         </div>
 
         {/* Error message */}
-        {createPrompt.isError && (
+        {isError && (
           <motion.p
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}

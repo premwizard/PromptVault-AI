@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Copy, Edit, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { GlassCard } from '@/components/ui/GlassCard';
@@ -14,9 +14,10 @@ interface PromptCardTiltProps {
   aiModel: string;
   tags: string[];
   favorited?: boolean;
-  usageCount?: number;
   onFavorite?: () => void;
   onClick?: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 export const PromptCardTilt = ({
@@ -29,12 +30,29 @@ export const PromptCardTilt = ({
   usageCount = 0,
   onFavorite,
   onClick,
+  onEdit,
+  onDelete,
 }: PromptCardTiltProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isFavorited, setIsFavorited] = useState(favorited);
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
+  const [showMenu, setShowMenu] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useMotionPreferences();
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setShowMenu(false);
+      }
+    };
+    if (showMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showMenu]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (prefersReducedMotion || !ref.current) return;
@@ -85,7 +103,13 @@ export const PromptCardTilt = ({
         handleMouseLeave();
       }}
       onMouseMove={handleMouseMove}
-      onClick={onClick}
+      onClick={(e) => {
+        // Prevent click if we're clicking the menu or its children
+        if (menuRef.current && menuRef.current.contains(e.target as Node)) {
+          return;
+        }
+        onClick?.();
+      }}
       style={{
         perspective: '1000px',
       }}
@@ -115,19 +139,69 @@ export const PromptCardTilt = ({
                   {title}
                 </h3>
               </div>
-              <motion.button
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleFavorite}
-                className="ml-2 flex-shrink-0"
-              >
-                <Heart
-                  className={cn(
-                    'w-5 h-5 transition-colors',
-                    isFavorited ? 'fill-red-500 text-red-500' : 'text-muted-foreground hover:text-red-500'
+              <div className="flex items-center gap-1">
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleFavorite}
+                  className="p-1.5 rounded-lg flex-shrink-0 text-muted-foreground hover:bg-white/5 transition-colors"
+                >
+                  <Heart
+                    className={cn(
+                      'w-4 h-4 transition-colors',
+                      isFavorited ? 'fill-red-500 text-red-500' : 'hover:text-red-500'
+                    )}
+                  />
+                </motion.button>
+                
+                <div className="relative" ref={menuRef}>
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowMenu(!showMenu);
+                    }}
+                    className="p-1.5 rounded-lg flex-shrink-0 text-muted-foreground hover:bg-white/5 hover:text-white transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                  </motion.button>
+
+                  <AnimatePresence>
+                  {showMenu && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                      className="absolute right-0 top-full mt-1 w-36 py-1 rounded-xl bg-background/95 backdrop-blur-xl border border-white/10 shadow-2xl z-20"
+                    >
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowMenu(false);
+                          onEdit?.();
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm text-white/80 hover:bg-white/10 hover:text-white transition-colors flex items-center gap-2"
+                      >
+                        <Edit className="w-3.5 h-3.5" />
+                        Edit
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowMenu(false);
+                          onDelete?.();
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors flex items-center gap-2"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                        Delete
+                      </button>
+                    </motion.div>
                   )}
-                />
-              </motion.button>
+                  </AnimatePresence>
+                </div>
+              </div>
             </div>
 
             {/* Description */}
