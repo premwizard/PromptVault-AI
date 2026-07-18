@@ -6,7 +6,7 @@ interface TiltValues {
   scale: number;
 }
 
-export function useTilt(): [RefObject<HTMLDivElement>, TiltValues] {
+export function useTilt(): [RefObject<HTMLDivElement | null>, TiltValues] {
   const ref = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState<TiltValues>({
     rotateX: 0,

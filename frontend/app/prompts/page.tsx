@@ -69,7 +69,7 @@ export default function PromptsPage() {
   });
 
   return (
-    <div className="p-8">
+    <div className="p-6 md:p-8">
       <motion.div
         initial="hidden"
         animate="show"
@@ -77,15 +77,12 @@ export default function PromptsPage() {
         className="space-y-8"
       >
         {/* Header */}
-        <motion.div variants={itemVariants} className="flex items-center justify-between">
+        <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-4xl font-bold mb-2">Prompt Library</h1>
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-2">Prompt Library</h1>
             <p className="text-muted-foreground">Browse and manage your prompt collection</p>
           </div>
-          <Button 
-            className="bg-accent-blue text-white hover:bg-accent-blue/90 shadow-[0_0_15px_rgba(59,130,246,0.5)] hover:shadow-[0_0_25px_rgba(59,130,246,0.6)] transition-all"
-            onClick={() => setIsModalOpen(true)}
-          >
+          <Button onClick={() => setIsModalOpen(true)}>
             <Plus className="w-5 h-5 mr-2" />
             New Prompt
           </Button>
@@ -218,11 +215,7 @@ export default function PromptsPage() {
               <p className="text-muted-foreground max-w-md mx-auto mb-8 text-lg">
                 Start building your personal AI prompt library to save, organize, and quickly reuse your most effective interactions.
               </p>
-              <Button 
-                size="lg"
-                className="bg-accent-blue text-white hover:bg-accent-blue/90 shadow-[0_0_20px_rgba(59,130,246,0.4)] text-base h-12 px-8"
-                onClick={() => setIsModalOpen(true)}
-              >
+              <Button size="lg" onClick={() => setIsModalOpen(true)}>
                 <Plus className="w-5 h-5 mr-2" />
                 Create Your First Prompt
               </Button>

@@ -14,13 +14,14 @@ interface PromptCardTiltProps {
   aiModel: string;
   tags: string[];
   favorited?: boolean;
+  usageCount?: number;
   onFavorite?: () => void;
   onClick?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
 }
 
-export const PromptCardTilt = ({
+export const PromptCardTilt = React.memo(({
   title,
   description,
   category,
@@ -242,4 +243,5 @@ export const PromptCardTilt = ({
       </motion.div>
     </motion.div>
   );
-};
+});
+PromptCardTilt.displayName = 'PromptCardTilt';

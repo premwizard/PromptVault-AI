@@ -3,11 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  ArrowRight, Sparkles, FolderOpen, Search, Heart, 
-  Layers, Zap, Shield, ChevronDown, CheckCircle2, 
-  Github, Twitter, MessageSquare 
-} from 'lucide-react';
+import { ArrowRight, Sparkles, Zap, Shield, Globe, Lock, BrainCircuit, Star, ChevronRight, CheckCircle2, MessageSquare, Code2, Copy, FileText, Check, Layers, Search, Heart, FolderOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { GlassCard } from '@/components/ui/GlassCard';
 
@@ -148,6 +144,12 @@ const Showcase = () => {
                   <div className="h-6 bg-white/10 rounded w-48 mb-2" />
                   <div className="h-4 bg-white/5 rounded w-64" />
                 </div>
+                  <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+                    <Globe className="w-5 h-5 text-muted-foreground hover:text-white transition-colors" />
+                  </a>
+                  <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+                    <MessageSquare className="w-5 h-5 text-muted-foreground hover:text-white transition-colors" />
+                  </a>
                 <div className="h-10 w-32 bg-accent-blue/80 rounded-lg" />
               </div>
               <div className="grid grid-cols-3 gap-4">
@@ -331,8 +333,8 @@ const Footer = () => {
             The professional workspace for saving, organizing, and deploying your most effective AI prompts.
           </p>
           <div className="flex gap-4">
-            <Button variant="ghost" size="icon" className="text-white/50 hover:text-white rounded-full hover:bg-white/10"><Twitter className="w-4 h-4" /></Button>
-            <Button variant="ghost" size="icon" className="text-white/50 hover:text-white rounded-full hover:bg-white/10"><Github className="w-4 h-4" /></Button>
+            <Button variant="ghost" size="icon" className="text-white/50 hover:text-white rounded-full hover:bg-white/10"><Globe className="w-4 h-4" /></Button>
+            <Button variant="ghost" size="icon" className="text-white/50 hover:text-white rounded-full hover:bg-white/10"><Code2 className="w-4 h-4" /></Button>
             <Button variant="ghost" size="icon" className="text-white/50 hover:text-white rounded-full hover:bg-white/10"><MessageSquare className="w-4 h-4" /></Button>
           </div>
         </div>

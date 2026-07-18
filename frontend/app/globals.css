@@ -137,16 +137,20 @@
     }
   }
 
-  .glow-effect {
-    @apply shadow-lg shadow-accent-blue/20;
+  .glow-primary {
+    @apply shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] transition-shadow duration-300;
   }
 
-  .glow-effect-purple {
-    @apply shadow-lg shadow-accent-purple/20;
+  .glow-danger {
+    @apply shadow-[0_0_15px_rgba(239,68,68,0.3)] hover:shadow-[0_0_25px_rgba(239,68,68,0.5)] transition-shadow duration-300;
   }
 
-  .glow-effect-cyan {
-    @apply shadow-lg shadow-accent-cyan/20;
+  .text-glow {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  }
+
+  .text-glow-primary {
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
   }
 }
 

@@ -8,7 +8,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-gradient-to-r from-accent-blue to-accent-purple text-white shadow-md shadow-accent-blue/20 hover:shadow-lg hover:shadow-accent-purple/30 hover:-translate-y-0.5 hover:brightness-110 active:scale-95 transition-all duration-300',
+        default: 'bg-gradient-to-r from-accent-blue to-accent-purple text-white glow-primary hover:-translate-y-0.5 hover:brightness-110 active:scale-95 transition-all duration-300 border-transparent',
         outline:
           'border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50',
         secondary:
@@ -16,7 +16,8 @@ const buttonVariants = cva(
         ghost:
           'hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50',
         destructive:
-          'bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40',
+          'bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40 transition-colors duration-300',
+        glass: 'bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300',
         link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {

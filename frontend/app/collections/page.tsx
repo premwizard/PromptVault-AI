@@ -33,7 +33,7 @@ export default function CollectionsPage() {
   const { data: collections = [], isLoading, isError } = useCollections();
 
   return (
-    <div className="p-8">
+    <div className="p-6 md:p-8">
       <motion.div
         initial="hidden"
         animate="show"
@@ -41,12 +41,12 @@ export default function CollectionsPage() {
         className="space-y-8"
       >
         {/* Header */}
-        <motion.div variants={itemVariants} className="flex items-center justify-between">
+        <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-4xl font-bold mb-2">Collections</h1>
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-2">Collections</h1>
             <p className="text-muted-foreground">Organize your prompts into collections</p>
           </div>
-          <Button className="bg-accent-blue hover:bg-accent-blue/90">
+          <Button>
             <Plus className="w-4 h-4 mr-2" />
             New Collection
           </Button>
@@ -56,7 +56,7 @@ export default function CollectionsPage() {
         {isLoading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-48 rounded-2xl bg-white/5 animate-pulse border border-white/5" />
+              <div key={i} className="h-[220px] rounded-2xl bg-white/5 animate-pulse border border-white/5" />
             ))}
           </div>
         )}
@@ -114,8 +114,8 @@ export default function CollectionsPage() {
             <p className="text-muted-foreground max-w-sm mx-auto mb-6">
               Collections help you group your prompts by project, workflow, or client.
             </p>
-            <Button className="bg-white text-black hover:bg-white/90">
-              <Plus className="w-4 h-4 mr-2" />
+            <Button size="lg">
+              <Plus className="w-5 h-5 mr-2" />
               Create your first collection
             </Button>
           </div>

@@ -44,7 +44,7 @@ export default function DashboardPage() {
   const firstName = user?.username || user?.email?.split('@')[0] || 'User';
 
   return (
-    <div className="p-8">
+    <div className="p-6 md:p-8">
       <motion.div
         initial="hidden"
         animate="show"
@@ -52,11 +52,13 @@ export default function DashboardPage() {
         className="space-y-8"
       >
         {/* Welcome Header */}
-        <motion.div variants={itemVariants}>
-          <h1 className="text-4xl font-bold mb-2">
-            Welcome back, <span className="bg-gradient-to-r from-accent-blue to-accent-purple bg-clip-text text-transparent">{firstName}</span>
-          </h1>
-          <p className="text-muted-foreground">You have {stats?.totalPrompts || 0} prompts in your vault</p>
+        <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-2">
+              Welcome back, <span className="bg-gradient-to-r from-accent-blue to-accent-purple bg-clip-text text-transparent">{firstName}</span>
+            </h1>
+            <p className="text-muted-foreground">You have {stats?.totalPrompts || 0} prompts in your vault</p>
+          </div>
         </motion.div>
 
         {/* Statistics Grid */}
@@ -98,10 +100,7 @@ export default function DashboardPage() {
               <Heart className="w-6 h-6 text-red-400 drop-shadow-[0_0_8px_rgba(248,113,113,0.5)]" />
               Your Favorites
             </h2>
-            <Button
-              variant="outline"
-              className="border-white/10 hover:bg-white/5 hover:border-white/20 transition-colors"
-            >
+            <Button variant="glass" size="sm">
               View All
             </Button>
           </div>
@@ -151,10 +150,7 @@ export default function DashboardPage() {
               <Zap className="w-6 h-6 text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.5)]" />
               Recent Activity
             </h2>
-            <Button
-              variant="outline"
-              className="border-white/10 hover:bg-white/5 hover:border-white/20 transition-colors"
-            >
+            <Button variant="glass" size="sm">
               View Timeline
             </Button>
           </div>

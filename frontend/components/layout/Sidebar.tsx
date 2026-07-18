@@ -14,6 +14,8 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
+  Menu,
+  X,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { GlassCard } from '@/components/ui/GlassCard';
@@ -33,6 +35,7 @@ const SECONDARY_NAV = [
 
 export const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   const { user, logout } = useAuth();
 
@@ -42,13 +45,37 @@ export const Sidebar = () => {
 
   return (
     <>
-      {/* Mobile toggle logic omitted for brevity, just ensure it's hidden or absolute on small screens */}
+      {/* Mobile Hamburger Button */}
+      <div className="md:hidden fixed top-4 left-4 z-50">
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="p-2 rounded-xl bg-black/40 backdrop-blur-xl border border-white/10 text-white shadow-lg shadow-black/50 hover:bg-white/10 transition-colors"
+          aria-label="Toggle Menu"
+        >
+          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </div>
+
+      {/* Mobile Backdrop */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setMobileOpen(false)}
+            className="md:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+          />
+        )}
+      </AnimatePresence>
+
       <motion.aside
         initial={{ x: -280 }}
-        animate={{ x: 0 }}
+        animate={{ x: mobileOpen ? 0 : (typeof window !== 'undefined' && window.innerWidth < 768 ? -280 : 0) }}
         className={cn(
-          'fixed left-0 top-0 z-40 h-screen transition-all duration-300 md:left-4 md:top-4 md:h-[calc(100vh-2rem)] hidden md:flex',
-          collapsed ? 'w-20' : 'w-64'
+          'fixed left-0 top-0 z-40 h-screen transition-all duration-300 md:left-4 md:top-4 md:h-[calc(100vh-2rem)] flex',
+          collapsed ? 'w-20' : 'w-64',
+          !mobileOpen && 'max-md:-translate-x-full'
         )}
       >
       <GlassCard className="h-full overflow-hidden flex flex-col p-6" variant="default">
@@ -66,7 +93,7 @@ export const Sidebar = () => {
           </motion.div>
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="p-1.5 hover:bg-white/10 rounded-lg transition-colors"
+            className="hidden md:block p-1.5 hover:bg-white/10 rounded-lg transition-colors"
             aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
             {collapsed ? (
@@ -83,7 +110,7 @@ export const Sidebar = () => {
             const Icon = item.icon;
             const active = isActive(item.href);
             return (
-              <Link key={item.href} href={item.href}>
+              <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}>
                 <motion.button
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}

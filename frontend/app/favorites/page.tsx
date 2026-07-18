@@ -58,7 +58,7 @@ export default function FavoritesPage() {
   };
 
   return (
-    <div className="p-8">
+    <div className="p-6 md:p-8">
       <motion.div
         initial="hidden"
         animate="show"
@@ -66,14 +66,16 @@ export default function FavoritesPage() {
         className="space-y-8"
       >
         {/* Header */}
-        <motion.div variants={itemVariants}>
-          <h1 className="text-4xl font-bold mb-2 flex items-center gap-2">
-            <Heart className="w-8 h-8 text-red-500" />
-            Your Favorites
-          </h1>
-          <p className="text-muted-foreground">
-            {isLoading ? "Loading..." : `Your ${favorites.length} favorite prompts`}
-          </p>
+        <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-2 flex items-center gap-2">
+              <Heart className="w-8 h-8 text-red-500" />
+              Your Favorites
+            </h1>
+            <p className="text-muted-foreground">
+              {isLoading ? "Loading..." : `Your ${favorites.length} favorite prompts`}
+            </p>
+          </div>
         </motion.div>
 
         {isLoading && (
