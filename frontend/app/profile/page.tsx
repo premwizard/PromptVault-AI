@@ -6,7 +6,7 @@ import { Mail, Calendar, Crown } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/button';
 import { useDashboardStats } from '@/lib/hooks/useDashboard';
-import { useUser } from '@clerk/nextjs';
+import { useAuth } from '@/contexts/AuthContext';
 import { ANIMATIONS } from '@/lib/constants';
 
 const containerVariants = {
@@ -30,11 +30,11 @@ const itemVariants = {
 };
 
 export default function ProfilePage() {
-  const { user } = useUser();
+  const { user } = useAuth();
   const { data: stats } = useDashboardStats();
   
-  const initial = user?.firstName?.charAt(0) || 'U';
-  const joinedAt = user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Recently';
+  const initial = user?.username?.charAt(0) || user?.email?.charAt(0) || 'U';
+  const joinedAt = 'Recently'; // Modify as needed
 
   return (
     <div className="p-8">
@@ -48,15 +48,15 @@ export default function ProfilePage() {
         <motion.div variants={itemVariants}>
           <GlassCard className="p-8">
             <div className="flex flex-col sm:flex-row items-center gap-6">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-accent-blue to-accent-purple flex items-center justify-center text-white text-3xl font-bold shrink-0">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-accent-blue to-accent-purple flex items-center justify-center text-white text-3xl font-bold shrink-0 uppercase">
                 {initial}
               </div>
               <div className="flex-1 text-center sm:text-left">
-                <h1 className="text-3xl font-bold mb-1">{user?.fullName || 'User'}</h1>
+                <h1 className="text-3xl font-bold mb-1">{user?.username || 'User'}</h1>
                 <div className="flex flex-col sm:flex-row gap-4 text-muted-foreground text-sm">
                   <div className="flex items-center justify-center sm:justify-start gap-2">
                     <Mail className="w-4 h-4" />
-                    {user?.primaryEmailAddress?.emailAddress || 'No email provided'}
+                    {user?.email || 'No email provided'}
                   </div>
                   <div className="flex items-center justify-center sm:justify-start gap-2">
                     <Crown className="w-4 h-4 text-accent-purple" />

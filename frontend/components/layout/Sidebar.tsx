@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { GlassCard } from '@/components/ui/GlassCard';
-import { useUser, SignOutButton } from '@clerk/nextjs';
+import { useAuth } from '@/contexts/AuthContext';
 
 const NAV_ITEMS = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -34,7 +34,7 @@ const SECONDARY_NAV = [
 export const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
-  const { user } = useUser();
+  const { user, logout } = useAuth();
 
   const isActive = (href: string) => {
     return pathname.startsWith(href);
@@ -154,8 +154,8 @@ export const Sidebar = () => {
         {/* User Profile */}
         <div className="pt-4 border-t border-white/10">
           <div className="flex items-center gap-3 p-2">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-blue to-accent-purple flex-shrink-0 flex items-center justify-center text-white font-bold">
-              {user?.firstName?.charAt(0) || 'U'}
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-blue to-accent-purple flex-shrink-0 flex items-center justify-center text-white font-bold uppercase">
+              {user?.username?.charAt(0) || user?.email?.charAt(0) || 'U'}
             </div>
             <motion.div
               initial={false}
@@ -163,29 +163,28 @@ export const Sidebar = () => {
               transition={{ duration: 0.2 }}
               className="overflow-hidden flex-1 min-w-0"
             >
-              <p className="text-sm font-medium truncate text-white">{user?.fullName || 'User'}</p>
-              <p className="text-xs text-muted-foreground truncate">Member</p>
+              <p className="text-sm font-medium truncate text-white">{user?.username || 'User'}</p>
+              <p className="text-xs text-muted-foreground truncate">{user?.email || 'Member'}</p>
             </motion.div>
           </div>
         </div>
 
         {/* Logout */}
-        <SignOutButton>
-          <motion.button
-            whileHover={{ x: 4 }}
-            className="w-full flex items-center gap-3 px-4 py-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors text-sm mt-2"
+        <motion.button
+          onClick={() => logout()}
+          whileHover={{ x: 4 }}
+          className="w-full flex items-center gap-3 px-4 py-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors text-sm mt-2"
+        >
+          <LogOut className="w-4 h-4 flex-shrink-0" />
+          <motion.span
+            initial={false}
+            animate={{ opacity: collapsed ? 0 : 1, width: collapsed ? 0 : 'auto' }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden whitespace-nowrap"
           >
-            <LogOut className="w-4 h-4 flex-shrink-0" />
-            <motion.span
-              initial={false}
-              animate={{ opacity: collapsed ? 0 : 1, width: collapsed ? 0 : 'auto' }}
-              transition={{ duration: 0.2 }}
-              className="overflow-hidden whitespace-nowrap"
-            >
-              Logout
-            </motion.span>
-          </motion.button>
-        </SignOutButton>
+            Logout
+          </motion.span>
+        </motion.button>
       </GlassCard>
     </motion.aside>
     </>

@@ -9,7 +9,7 @@ import { AnimatedStatCard } from '@/components/ui/AnimatedStatCard';
 import { Button } from '@/components/ui/button';
 import { useDashboardStats } from '@/lib/hooks/useDashboard';
 import { usePrompts } from '@/lib/hooks/usePrompts';
-import { useUser } from '@clerk/nextjs';
+import { useAuth } from '@/contexts/AuthContext';
 import { ANIMATIONS } from '@/lib/constants';
 
 const containerVariants = {
@@ -33,7 +33,7 @@ const itemVariants = {
 };
 
 export default function DashboardPage() {
-  const { user } = useUser();
+  const { user } = useAuth();
   const { data: stats, isLoading: statsLoading } = useDashboardStats();
   const { data: prompts = [] } = usePrompts();
   
@@ -41,7 +41,7 @@ export default function DashboardPage() {
   // Assuming prompts has a favorited status or we just grab top 3 for now.
   const favoritePrompts = prompts.slice(0, 3); // Modify this later if favorited is a field
   
-  const firstName = user?.firstName || 'User';
+  const firstName = user?.username || user?.email?.split('@')[0] || 'User';
 
   return (
     <div className="p-8">

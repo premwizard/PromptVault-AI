@@ -21,9 +21,9 @@ class Settings(BaseSettings):
     # Postgres Database
     DATABASE_URL: str
     
-    # Clerk Authentication (if validating manually, else we use standard JWT verification)
-    CLERK_SECRET_KEY: str = ""
-    CLERK_PUBLISHABLE_KEY: str = ""
+    # Authentication
+    SECRET_KEY: str = "your-super-secret-key-change-me"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7 # 7 days
     
     # AI Providers
     OPENAI_API_KEY: str = ""

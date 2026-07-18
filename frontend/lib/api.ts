@@ -7,6 +7,5 @@ const api = axios.create({
   },
 });
 
-// Optionally add interceptors for Clerk tokens here if needed
-
+// Optionally add interceptors for Auth tokens here if needed
 export default api;

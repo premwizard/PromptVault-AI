@@ -1,3 +1,4 @@
+import { AuthProvider } from '@/contexts/AuthContext';
 import { Analytics } from '@vercel/analytics/next';
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
@@ -38,14 +39,16 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-background dark" suppressHydrationWarning>
       <body className={`${geistSans.className} antialiased bg-background text-foreground relative flex min-h-screen flex-col`}>
-        <QueryProvider>
-          <AnimatedBackground />
-          <div className="relative z-0 flex-1 flex flex-col md:pl-64 transition-all duration-300">
-            <main className="flex-1 overflow-y-auto overflow-x-hidden">
-              {children}
-            </main>
-          </div>
-        </QueryProvider>
+        <AuthProvider>
+          <QueryProvider>
+            <AnimatedBackground />
+            <div className="relative z-0 flex-1 flex flex-col md:pl-64 transition-all duration-300">
+              <main className="flex-1 overflow-y-auto overflow-x-hidden">
+                {children}
+              </main>
+            </div>
+          </QueryProvider>
+        </AuthProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

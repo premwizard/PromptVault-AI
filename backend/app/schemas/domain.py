@@ -21,12 +21,13 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     email: str
-    clerk_id: str
+    username: str
+    password: str
 
 class UserResponse(UserBase):
     id: UUID
     email: str
-    clerk_id: str
+    username: str
     created_at: datetime
     updated_at: datetime
     settings: Optional[UserSettingsResponse] = None
