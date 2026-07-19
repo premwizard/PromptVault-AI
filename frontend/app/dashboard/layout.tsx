@@ -1,10 +1,10 @@
-import React from 'react';
-import { Sidebar } from '@/components/layout/Sidebar';
-import ProtectedRoute from '@/components/auth/ProtectedRoute';
+import React from "react";
+import { Sidebar } from "@/components/layout/Sidebar";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
 export const metadata = {
-  title: 'Dashboard - PromptVault AI',
-  description: 'Manage your prompts and collections',
+  title: "Dashboard - PromptVault AI",
+  description: "Manage your prompts and collections",
 };
 
 export default function DashboardLayout({

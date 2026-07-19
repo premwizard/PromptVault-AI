@@ -1,10 +1,10 @@
-import React from 'react';
-import { Sidebar } from '@/components/layout/Sidebar';
-import ProtectedRoute from '@/components/auth/ProtectedRoute';
+import React from "react";
+import { Sidebar } from "@/components/layout/Sidebar";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
 export const metadata = {
-  title: 'Prompts - PromptVault AI',
-  description: 'Manage your prompts',
+  title: "Prompts - PromptVault AI",
+  description: "Manage your prompts",
 };
 
 export default function PromptsLayout({

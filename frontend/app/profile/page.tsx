@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Calendar, Crown } from 'lucide-react';
-import { GlassCard } from '@/components/ui/GlassCard';
-import { Button } from '@/components/ui/button';
-import { useDashboardStats } from '@/lib/hooks/useDashboard';
-import { useAuth } from '@/contexts/AuthContext';
-import { ANIMATIONS } from '@/lib/constants';
+import React from "react";
+import { motion } from "framer-motion";
+import { Mail, Calendar, Crown } from "lucide-react";
+import { GlassCard } from "@/components/ui/GlassCard";
+import { Button } from "@/components/ui/button";
+import { useDashboardStats } from "@/lib/hooks/useDashboard";
+import { useAuth } from "@/contexts/AuthContext";
+import { ANIMATIONS } from "@/lib/constants";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -32,9 +32,9 @@ const itemVariants = {
 export default function ProfilePage() {
   const { user } = useAuth();
   const { data: stats } = useDashboardStats();
-  
-  const initial = user?.username?.charAt(0) || user?.email?.charAt(0) || 'U';
-  const joinedAt = 'Recently'; // Modify as needed
+
+  const initial = user?.username?.charAt(0) || user?.email?.charAt(0) || "U";
+  const joinedAt = "Recently"; // Modify as needed
 
   return (
     <div className="p-8">
@@ -52,11 +52,13 @@ export default function ProfilePage() {
                 {initial}
               </div>
               <div className="flex-1 text-center sm:text-left">
-                <h1 className="text-3xl font-bold mb-1">{user?.username || 'User'}</h1>
+                <h1 className="text-3xl font-bold mb-1">
+                  {user?.username || "User"}
+                </h1>
                 <div className="flex flex-col sm:flex-row gap-4 text-muted-foreground text-sm">
                   <div className="flex items-center justify-center sm:justify-start gap-2">
                     <Mail className="w-4 h-4" />
-                    {user?.email || 'No email provided'}
+                    {user?.email || "No email provided"}
                   </div>
                   <div className="flex items-center justify-center sm:justify-start gap-2">
                     <Crown className="w-4 h-4 text-accent-purple" />
@@ -67,7 +69,9 @@ export default function ProfilePage() {
                     Joined {joinedAt}
                   </div>
                 </div>
-                <p className="text-foreground mt-3 mb-4">PromptVault user building out an amazing collection.</p>
+                <p className="text-foreground mt-3 mb-4">
+                  PromptVault user building out an amazing collection.
+                </p>
                 <Button className="bg-accent-blue hover:bg-accent-blue/90">
                   Edit Profile
                 </Button>
@@ -77,12 +81,15 @@ export default function ProfilePage() {
         </motion.div>
 
         {/* Stats Grid */}
-        <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <motion.div
+          variants={itemVariants}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+        >
           {[
-            { label: 'Total Prompts', value: stats?.totalPrompts || 0 },
-            { label: 'Favorites', value: stats?.favoritePrompts || 0 },
-            { label: 'Collections', value: 0 }, // Would come from stats.collections
-            { label: 'Time Saved', value: `${stats?.saveTimeHours || 0}h` },
+            { label: "Total Prompts", value: stats?.totalPrompts || 0 },
+            { label: "Favorites", value: stats?.favoritePrompts || 0 },
+            { label: "Collections", value: 0 }, // Would come from stats.collections
+            { label: "Time Saved", value: `${stats?.saveTimeHours || 0}h` },
           ].map((stat, idx) => (
             <GlassCard key={idx} className="p-4 text-center">
               <p className="text-muted-foreground text-sm mb-2">{stat.label}</p>
@@ -96,19 +103,23 @@ export default function ProfilePage() {
           <h2 className="text-2xl font-bold mb-4">Recent Activity</h2>
           <GlassCard className="p-6">
             <div className="space-y-4">
-              {stats?.recentActivity?.length ? stats.recentActivity.map((activity, idx) => (
-                <div key={idx} className="flex items-start gap-4">
-                  <div className="w-8 h-8 rounded-full bg-accent-blue/20 flex items-center justify-center flex-shrink-0 mt-1">
-                    <div className="w-2 h-2 bg-accent-blue rounded-full" />
+              {stats?.recentActivity?.length ? (
+                stats.recentActivity.map((activity, idx) => (
+                  <div key={idx} className="flex items-start gap-4">
+                    <div className="w-8 h-8 rounded-full bg-accent-blue/20 flex items-center justify-center flex-shrink-0 mt-1">
+                      <div className="w-2 h-2 bg-accent-blue rounded-full" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-foreground font-medium">
+                        {activity.action} - {activity.item}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {activity.time}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <p className="text-foreground font-medium">{activity.action} - {activity.item}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {activity.time}
-                    </p>
-                  </div>
-                </div>
-              )) : (
+                ))
+              ) : (
                 <p className="text-muted-foreground">No recent activity.</p>
               )}
             </div>

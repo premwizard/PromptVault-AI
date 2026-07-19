@@ -1,5 +1,5 @@
-import api from '@/lib/api';
-import { getAccessToken, setTokens, removeTokens } from '@/lib/auth';
+import api from "@/lib/api";
+import { getAccessToken, setTokens, removeTokens } from "@/lib/auth";
 
 export const authService = {
   async login(data: any) {
@@ -18,9 +18,12 @@ export const authService = {
     setTokens(access_token, refresh_token);
     return response.data;
     */
-    
+
     // Mock response for now
-    return { access_token: 'mock_token', user: { id: 'mock', email: data.email, username: 'MockUser' } };
+    return {
+      access_token: "mock_token",
+      user: { id: "mock", email: data.email, username: "MockUser" },
+    };
   },
 
   async register(data: any) {
@@ -42,7 +45,7 @@ export const authService = {
     try {
       // const response = await api.get('/auth/me');
       // return response.data;
-      return { id: 'mock', email: 'user@example.com', username: 'MockUser' };
+      return { id: "mock", email: "user@example.com", username: "MockUser" };
     } catch (error) {
       removeTokens();
       throw error;
@@ -61,5 +64,5 @@ export const authService = {
     return access_token;
     */
     return null;
-  }
+  },
 };

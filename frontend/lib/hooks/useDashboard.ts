@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import api from '../api';
+import { useQuery } from "@tanstack/react-query";
+import api from "../api";
 
 export interface DashboardStats {
   totalPrompts: number;
@@ -16,10 +16,10 @@ export interface DashboardStats {
 
 export function useDashboardStats() {
   return useQuery({
-    queryKey: ['dashboardStats'],
+    queryKey: ["dashboardStats"],
     queryFn: async () => {
       try {
-        const { data } = await api.get<DashboardStats>('/stats');
+        const { data } = await api.get<DashboardStats>("/stats");
         return data;
       } catch {
         // Fallback or empty structure if API is not yet ready
@@ -29,7 +29,7 @@ export function useDashboardStats() {
           usageThisMonth: 0,
           usageLastMonth: 0,
           saveTimeHours: 0,
-          recentActivity: []
+          recentActivity: [],
         };
       }
     },

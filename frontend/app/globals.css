@@ -1,6 +1,6 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
-@import 'shadcn/tailwind.css';
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -52,46 +52,44 @@
 
 :root {
   color-scheme: dark;
-  --background: #09090B;
-  --foreground: #F5F5F7;
+  --background: #09090b;
+  --foreground: #f5f5f7;
   --card: #111827;
-  --card-foreground: #F5F5F7;
-  --popover: #1A1D2E;
-  --popover-foreground: #F5F5F7;
-  --primary: #3B82F6;
-  --primary-foreground: #09090B;
-  --secondary: #1E293B;
-  --secondary-foreground: #F5F5F7;
-  --muted: #64748B;
-  --muted-foreground: #94A3B8;
-  --accent: #A78BFA;
-  --accent-foreground: #09090B;
-  --destructive: #EF4444;
-  --border: #27272A;
-  --input: #18181B;
-  --ring: #A78BFA;
-  --chart-1: #3B82F6;
-  --chart-2: #8B5CF6;
-  --chart-3: #EC4899;
-  --chart-4: #06B6D4;
-  --chart-5: #10B981;
+  --card-foreground: #f5f5f7;
+  --popover: #1a1d2e;
+  --popover-foreground: #f5f5f7;
+  --primary: #3b82f6;
+  --primary-foreground: #09090b;
+  --secondary: #1e293b;
+  --secondary-foreground: #f5f5f7;
+  --muted: #64748b;
+  --muted-foreground: #94a3b8;
+  --accent: #a78bfa;
+  --accent-foreground: #09090b;
+  --destructive: #ef4444;
+  --border: #27272a;
+  --input: #18181b;
+  --ring: #a78bfa;
+  --chart-1: #3b82f6;
+  --chart-2: #8b5cf6;
+  --chart-3: #ec4899;
+  --chart-4: #06b6d4;
+  --chart-5: #10b981;
   --radius: 0.75rem;
   --sidebar: #111827;
-  --sidebar-foreground: #F5F5F7;
-  --sidebar-primary: #3B82F6;
-  --sidebar-primary-foreground: #09090B;
-  --sidebar-accent: #A78BFA;
-  --sidebar-accent-foreground: #09090B;
-  --sidebar-border: #27272A;
-  --sidebar-ring: #A78BFA;
+  --sidebar-foreground: #f5f5f7;
+  --sidebar-primary: #3b82f6;
+  --sidebar-primary-foreground: #09090b;
+  --sidebar-accent: #a78bfa;
+  --sidebar-accent-foreground: #09090b;
+  --sidebar-border: #27272a;
+  --sidebar-ring: #a78bfa;
   --glass: rgba(17, 24, 39, 0.4);
   --glass-subtle: rgba(17, 24, 39, 0.2);
-  --accent-blue: #3B82F6;
-  --accent-purple: #A78BFA;
-  --accent-cyan: #06B6D4;
+  --accent-blue: #3b82f6;
+  --accent-purple: #a78bfa;
+  --accent-cyan: #06b6d4;
 }
-
-
 
 @layer base {
   * {
@@ -100,7 +98,7 @@
   body {
     @apply bg-background text-foreground;
   }
-  
+
   html {
     @apply bg-background;
   }
@@ -120,7 +118,14 @@
   }
 
   .animated-gradient {
-    background: linear-gradient(135deg, #3B82F6 0%, #A78BFA 25%, #EC4899 50%, #06B6D4 75%, #3B82F6 100%);
+    background: linear-gradient(
+      135deg,
+      #3b82f6 0%,
+      #a78bfa 25%,
+      #ec4899 50%,
+      #06b6d4 75%,
+      #3b82f6 100%
+    );
     background-size: 400% 400%;
     animation: gradientShift 8s ease infinite;
   }
@@ -158,7 +163,7 @@
   .glass-card {
     background-color: rgba(17, 24, 39, 0.4);
   }
-  
+
   .glass-card-subtle {
     background-color: rgba(17, 24, 39, 0.2);
   }

@@ -1,10 +1,10 @@
-import React from 'react';
-import { Sidebar } from '@/components/layout/Sidebar';
-import ProtectedRoute from '@/components/auth/ProtectedRoute';
+import React from "react";
+import { Sidebar } from "@/components/layout/Sidebar";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
 export const metadata = {
-  title: 'Favorites - PromptVault AI',
-  description: 'Your favorite prompts',
+  title: "Favorites - PromptVault AI",
+  description: "Your favorite prompts",
 };
 
 export default function FavoritesLayout({

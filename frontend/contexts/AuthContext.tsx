@@ -1,7 +1,13 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { authService } from '@/services/authService';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { authService } from "@/services/authService";
 
 interface User {
   id: string;
@@ -33,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setUser(currentUser);
         }
       } catch (error) {
-        console.error('Failed to authenticate:', error);
+        console.error("Failed to authenticate:", error);
       } finally {
         setIsLoading(false);
       }
@@ -43,7 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = (token: string, userData: User) => {
-    // In a real app, you might just call authService.login which sets the token, 
+    // In a real app, you might just call authService.login which sets the token,
     // then call getCurrentUser. But here we just set it manually to match the interface.
     setUser(userData);
   };
@@ -71,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }

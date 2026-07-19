@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Search, Filter, Plus, PenLine } from 'lucide-react';
-import { GlassCard } from '@/components/ui/GlassCard';
-import { PromptCardTilt } from '@/components/ui/PromptCardTilt';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { usePrompts, useDeletePrompt, Prompt } from '@/lib/hooks/usePrompts';
-import { ANIMATIONS, PROMPT_CATEGORIES, AI_MODELS } from '@/lib/constants';
-import { CreatePromptModal } from '@/components/features/CreatePromptModal';
-import { ViewPromptModal } from '@/components/features/ViewPromptModal';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Search, Filter, Plus, PenLine } from "lucide-react";
+import { GlassCard } from "@/components/ui/GlassCard";
+import { PromptCardTilt } from "@/components/ui/PromptCardTilt";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { usePrompts, useDeletePrompt, Prompt } from "@/lib/hooks/usePrompts";
+import { ANIMATIONS, PROMPT_CATEGORIES, AI_MODELS } from "@/lib/constants";
+import { CreatePromptModal } from "@/components/features/CreatePromptModal";
+import { ViewPromptModal } from "@/components/features/ViewPromptModal";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -33,7 +33,7 @@ const itemVariants = {
 };
 
 export default function PromptsPage() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,15 +55,17 @@ export default function PromptsPage() {
   };
 
   const handleDelete = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this prompt?')) {
+    if (window.confirm("Are you sure you want to delete this prompt?")) {
       deletePrompt.mutate(id);
     }
   };
 
-  const filteredPrompts = prompts.filter(prompt => {
-    const matchesSearch = prompt.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  const filteredPrompts = prompts.filter((prompt) => {
+    const matchesSearch =
+      prompt.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       prompt.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = !selectedCategory || prompt.category?.name === selectedCategory;
+    const matchesCategory =
+      !selectedCategory || prompt.category?.name === selectedCategory;
     const matchesModel = !selectedModel || prompt.ai_model === selectedModel;
     return matchesSearch && matchesCategory && matchesModel;
   });
@@ -77,10 +79,17 @@ export default function PromptsPage() {
         className="space-y-8"
       >
         {/* Header */}
-        <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-col md:flex-row md:items-center justify-between gap-4"
+        >
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-2">Prompt Library</h1>
-            <p className="text-muted-foreground">Browse and manage your prompt collection</p>
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-2">
+              Prompt Library
+            </h1>
+            <p className="text-muted-foreground">
+              Browse and manage your prompt collection
+            </p>
           </div>
           <Button onClick={() => setIsModalOpen(true)}>
             <Plus className="w-5 h-5 mr-2" />
@@ -93,7 +102,9 @@ export default function PromptsPage() {
           <GlassCard className="p-6">
             <div className="flex gap-4 flex-wrap items-end">
               <div className="flex-1 min-w-64">
-                <label className="text-sm text-muted-foreground mb-2 block">Search</label>
+                <label className="text-sm text-muted-foreground mb-2 block">
+                  Search
+                </label>
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
@@ -105,28 +116,36 @@ export default function PromptsPage() {
                 </div>
               </div>
               <div className="min-w-40">
-                <label className="text-sm text-muted-foreground mb-2 block">Category</label>
+                <label className="text-sm text-muted-foreground mb-2 block">
+                  Category
+                </label>
                 <select
-                  value={selectedCategory || ''}
+                  value={selectedCategory || ""}
                   onChange={(e) => setSelectedCategory(e.target.value || null)}
                   className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-foreground text-sm"
                 >
                   <option value="">All Categories</option>
-                  {PROMPT_CATEGORIES.map(cat => (
-                    <option key={cat} value={cat}>{cat}</option>
+                  {PROMPT_CATEGORIES.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
                   ))}
                 </select>
               </div>
               <div className="min-w-40">
-                <label className="text-sm text-muted-foreground mb-2 block">Model</label>
+                <label className="text-sm text-muted-foreground mb-2 block">
+                  Model
+                </label>
                 <select
-                  value={selectedModel || ''}
+                  value={selectedModel || ""}
                   onChange={(e) => setSelectedModel(e.target.value || null)}
                   className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-foreground text-sm"
                 >
                   <option value="">All Models</option>
-                  {AI_MODELS.map(model => (
-                    <option key={model} value={model}>{model}</option>
+                  {AI_MODELS.map((model) => (
+                    <option key={model} value={model}>
+                      {model}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -146,26 +165,35 @@ export default function PromptsPage() {
         <motion.div variants={itemVariants}>
           <div className="mb-4 flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
-              {isLoading ? "Loading prompts..." : `Showing ${filteredPrompts.length} of ${prompts.length} prompts`}
+              {isLoading
+                ? "Loading prompts..."
+                : `Showing ${filteredPrompts.length} of ${prompts.length} prompts`}
             </p>
           </div>
-          
+
           {isLoading && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="h-[280px] rounded-2xl bg-white/5 animate-pulse border border-white/5" />
+                <div
+                  key={i}
+                  className="h-[280px] rounded-2xl bg-white/5 animate-pulse border border-white/5"
+                />
               ))}
             </div>
           )}
-          
+
           {isError && (
-             <div className="text-center py-16 px-4 rounded-2xl border border-red-500/20 bg-red-500/5">
-               <div className="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4 border border-red-500/20">
-                 <Filter className="w-8 h-8 text-red-400" />
-               </div>
-               <p className="text-red-400 font-medium">Failed to load prompts.</p>
-               <p className="text-muted-foreground text-sm mt-2">Please try refreshing the page or check your connection.</p>
-             </div>
+            <div className="text-center py-16 px-4 rounded-2xl border border-red-500/20 bg-red-500/5">
+              <div className="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4 border border-red-500/20">
+                <Filter className="w-8 h-8 text-red-400" />
+              </div>
+              <p className="text-red-400 font-medium">
+                Failed to load prompts.
+              </p>
+              <p className="text-muted-foreground text-sm mt-2">
+                Please try refreshing the page or check your connection.
+              </p>
+            </div>
           )}
 
           {!isLoading && !isError && (
@@ -182,7 +210,7 @@ export default function PromptsPage() {
                     description={prompt.description}
                     category={prompt.category?.name || "Uncategorized"}
                     aiModel={prompt.ai_model}
-                    tags={prompt.tags.map(t => t.name)}
+                    tags={prompt.tags.map((t) => t.name)}
                     favorited={false}
                     usageCount={prompt.usage_count}
                     onClick={() => handleView(prompt)}
@@ -194,26 +222,35 @@ export default function PromptsPage() {
             </motion.div>
           )}
 
-          {!isLoading && prompts.length > 0 && filteredPrompts.length === 0 && !isError && (
-            <div className="text-center py-16 px-4 rounded-2xl border border-white/5 bg-white/[0.02] mt-8">
-              <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4 border border-white/10">
-                <Search className="w-8 h-8 text-white/20" />
+          {!isLoading &&
+            prompts.length > 0 &&
+            filteredPrompts.length === 0 &&
+            !isError && (
+              <div className="text-center py-16 px-4 rounded-2xl border border-white/5 bg-white/[0.02] mt-8">
+                <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4 border border-white/10">
+                  <Search className="w-8 h-8 text-white/20" />
+                </div>
+                <h3 className="text-lg font-medium text-white mb-2">
+                  No prompts found
+                </h3>
+                <p className="text-muted-foreground max-w-sm mx-auto">
+                  Try adjusting your search criteria or clear your filters to
+                  find what you&apos;re looking for.
+                </p>
               </div>
-              <h3 className="text-lg font-medium text-white mb-2">No prompts found</h3>
-              <p className="text-muted-foreground max-w-sm mx-auto">
-                Try adjusting your search criteria or clear your filters to find what you're looking for.
-              </p>
-            </div>
-          )}
+            )}
 
           {!isLoading && prompts.length === 0 && !isError && (
             <div className="text-center py-20 px-4 rounded-2xl border border-white/5 bg-white/[0.02] mt-8 flex flex-col items-center">
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-accent-blue/20 to-accent-purple/20 flex items-center justify-center mx-auto mb-6 border border-white/10 shadow-[0_0_30px_rgba(167,139,250,0.1)]">
                 <PenLine className="w-10 h-10 text-accent-blue" />
               </div>
-              <h3 className="text-2xl font-bold text-white mb-3">You haven't created any prompts yet</h3>
+              <h3 className="text-2xl font-bold text-white mb-3">
+                You haven&apos;t created any prompts yet
+              </h3>
               <p className="text-muted-foreground max-w-md mx-auto mb-8 text-lg">
-                Start building your personal AI prompt library to save, organize, and quickly reuse your most effective interactions.
+                Start building your personal AI prompt library to save,
+                organize, and quickly reuse your most effective interactions.
               </p>
               <Button size="lg" onClick={() => setIsModalOpen(true)}>
                 <Plus className="w-5 h-5 mr-2" />
@@ -224,7 +261,7 @@ export default function PromptsPage() {
         </motion.div>
       </motion.div>
 
-      <CreatePromptModal 
+      <CreatePromptModal
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);

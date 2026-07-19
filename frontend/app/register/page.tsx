@@ -1,32 +1,32 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { Sparkles, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { authService } from '@/services/authService';
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { Sparkles, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { authService } from "@/services/authService";
 
 export default function RegisterPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError("");
 
     try {
       await authService.register({ email, password, username });
-      router.push('/login');
+      router.push("/login");
     } catch (err) {
-      setError('Registration failed. Please try again.');
+      setError("Registration failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -53,7 +53,9 @@ export default function RegisterPage() {
             </div>
 
             <div className="mb-8">
-              <h1 className="text-3xl font-bold tracking-tight mb-2">Create an account</h1>
+              <h1 className="text-3xl font-bold tracking-tight mb-2">
+                Create an account
+              </h1>
               <p className="text-muted-foreground text-sm">
                 Start building your personal prompt library today.
               </p>
@@ -61,7 +63,9 @@ export default function RegisterPage() {
 
             <form onSubmit={handleRegister} className="space-y-5">
               <div className="space-y-1">
-                <label className="text-sm font-medium text-white/90">Username</label>
+                <label className="text-sm font-medium text-white/90">
+                  Username
+                </label>
                 <Input
                   type="text"
                   value={username}
@@ -71,7 +75,9 @@ export default function RegisterPage() {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-sm font-medium text-white/90">Email</label>
+                <label className="text-sm font-medium text-white/90">
+                  Email
+                </label>
                 <Input
                   type="email"
                   value={email}
@@ -81,7 +87,9 @@ export default function RegisterPage() {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-sm font-medium text-white/90">Password</label>
+                <label className="text-sm font-medium text-white/90">
+                  Password
+                </label>
                 <Input
                   type="password"
                   value={password}
@@ -92,9 +100,9 @@ export default function RegisterPage() {
               </div>
 
               {error && (
-                <motion.p 
-                  initial={{ opacity: 0, height: 0 }} 
-                  animate={{ opacity: 1, height: 'auto' }} 
+                <motion.p
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
                   className="text-destructive text-sm"
                 >
                   {error}
@@ -106,14 +114,19 @@ export default function RegisterPage() {
                 className="w-full h-11 text-base mt-2"
                 disabled={isLoading}
               >
-                {isLoading ? 'Creating account...' : 'Create Account'}
-                {!isLoading && <ArrowRight className="w-4 h-4 ml-2 opacity-70" />}
+                {isLoading ? "Creating account..." : "Create Account"}
+                {!isLoading && (
+                  <ArrowRight className="w-4 h-4 ml-2 opacity-70" />
+                )}
               </Button>
             </form>
 
             <p className="text-center text-sm text-muted-foreground mt-8">
-              Already have an account?{' '}
-              <Link href="/login" className="text-accent-blue hover:text-white transition-colors font-medium">
+              Already have an account?{" "}
+              <Link
+                href="/login"
+                className="text-accent-blue hover:text-white transition-colors font-medium"
+              >
                 Sign in
               </Link>
             </p>
@@ -128,7 +141,7 @@ export default function RegisterPage() {
           <div className="absolute top-[30%] left-[20%] w-[500px] h-[500px] bg-accent-purple/30 rounded-full blur-[120px] mix-blend-screen" />
           <div className="absolute bottom-[10%] right-[10%] w-[600px] h-[600px] bg-accent-cyan/20 rounded-full blur-[150px] mix-blend-screen" />
         </div>
-        
+
         <div className="relative z-10 max-w-lg">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -140,12 +153,15 @@ export default function RegisterPage() {
               <Sparkles className="w-6 h-6 text-accent-purple" />
             </div>
             <h2 className="text-2xl font-bold text-white mb-4">
-              "The organization and quick access to my best prompts has doubled my daily output."
+              &quot;The organization and quick access to my best prompts has
+              doubled my daily output.&quot;
             </h2>
             <div className="flex items-center gap-3 mt-8">
               <div className="w-10 h-10 rounded-full bg-white/10 border border-white/20" />
               <div>
-                <div className="text-sm font-medium text-white">Michael Chang</div>
+                <div className="text-sm font-medium text-white">
+                  Michael Chang
+                </div>
                 <div className="text-xs text-white/50">Content Strategist</div>
               </div>
             </div>

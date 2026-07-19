@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Heart } from 'lucide-react';
-import { PromptCardTilt } from '@/components/ui/PromptCardTilt';
-import { usePrompts, useDeletePrompt, Prompt } from '@/lib/hooks/usePrompts';
-import { ANIMATIONS } from '@/lib/constants';
-import { CreatePromptModal } from '@/components/features/CreatePromptModal';
-import { ViewPromptModal } from '@/components/features/ViewPromptModal';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Heart } from "lucide-react";
+import { PromptCardTilt } from "@/components/ui/PromptCardTilt";
+import { usePrompts, useDeletePrompt, Prompt } from "@/lib/hooks/usePrompts";
+import { ANIMATIONS } from "@/lib/constants";
+import { CreatePromptModal } from "@/components/features/CreatePromptModal";
+import { ViewPromptModal } from "@/components/features/ViewPromptModal";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -32,7 +32,7 @@ const itemVariants = {
 export default function FavoritesPage() {
   const { data: prompts = [], isLoading, isError } = usePrompts();
   const deletePrompt = useDeletePrompt();
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [promptToEdit, setPromptToEdit] = useState<Prompt | null>(null);
@@ -52,7 +52,7 @@ export default function FavoritesPage() {
   };
 
   const handleDelete = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this prompt?')) {
+    if (window.confirm("Are you sure you want to delete this prompt?")) {
       deletePrompt.mutate(id);
     }
   };
@@ -66,14 +66,19 @@ export default function FavoritesPage() {
         className="space-y-8"
       >
         {/* Header */}
-        <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-col md:flex-row md:items-center justify-between gap-4"
+        >
           <div>
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-2 flex items-center gap-2">
               <Heart className="w-8 h-8 text-red-500" />
               Your Favorites
             </h1>
             <p className="text-muted-foreground">
-              {isLoading ? "Loading..." : `Your ${favorites.length} favorite prompts`}
+              {isLoading
+                ? "Loading..."
+                : `Your ${favorites.length} favorite prompts`}
             </p>
           </div>
         </motion.div>
@@ -81,7 +86,10 @@ export default function FavoritesPage() {
         {isLoading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
-               <div key={i} className="h-[280px] rounded-2xl bg-white/5 animate-pulse border border-white/5" />
+              <div
+                key={i}
+                className="h-[280px] rounded-2xl bg-white/5 animate-pulse border border-white/5"
+              />
             ))}
           </div>
         )}
@@ -91,8 +99,12 @@ export default function FavoritesPage() {
             <div className="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4 border border-red-500/20">
               <Heart className="w-8 h-8 text-red-400" />
             </div>
-            <p className="text-red-400 font-medium">Failed to load favorite prompts.</p>
-            <p className="text-muted-foreground text-sm mt-2">Please try refreshing the page or check your connection.</p>
+            <p className="text-red-400 font-medium">
+              Failed to load favorite prompts.
+            </p>
+            <p className="text-muted-foreground text-sm mt-2">
+              Please try refreshing the page or check your connection.
+            </p>
           </div>
         )}
 
@@ -111,7 +123,7 @@ export default function FavoritesPage() {
                   description={prompt.description}
                   category={prompt.category?.name || "Uncategorized"}
                   aiModel={prompt.ai_model}
-                  tags={prompt.tags.map(t => t.name)}
+                  tags={prompt.tags.map((t) => t.name)}
                   favorited={true}
                   usageCount={prompt.usage_count}
                   onClick={() => handleView(prompt)}
@@ -128,15 +140,18 @@ export default function FavoritesPage() {
             <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4 border border-white/10">
               <Heart className="w-8 h-8 text-white/20" />
             </div>
-            <h3 className="text-lg font-medium text-white mb-2">No favorites yet</h3>
+            <h3 className="text-lg font-medium text-white mb-2">
+              No favorites yet
+            </h3>
             <p className="text-muted-foreground max-w-sm mx-auto">
-              Click the heart icon on any prompt to add it to your favorites for quick access.
+              Click the heart icon on any prompt to add it to your favorites for
+              quick access.
             </p>
           </div>
         )}
       </motion.div>
 
-      <CreatePromptModal 
+      <CreatePromptModal
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);

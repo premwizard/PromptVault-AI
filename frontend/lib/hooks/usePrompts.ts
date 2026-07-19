@@ -1,5 +1,5 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import api from '../api';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import api from "../api";
 
 export interface Prompt {
   id: string;
@@ -16,9 +16,9 @@ export interface Prompt {
 
 export function usePrompts() {
   return useQuery({
-    queryKey: ['prompts'],
+    queryKey: ["prompts"],
     queryFn: async () => {
-      const { data } = await api.get<Prompt[]>('/prompts');
+      const { data } = await api.get<Prompt[]>("/prompts");
       return data;
     },
   });
@@ -39,11 +39,11 @@ export function useCreatePrompt() {
 
   return useMutation({
     mutationFn: async (newPrompt: CreatePromptData) => {
-      const { data } = await api.post<Prompt>('/prompts', newPrompt);
+      const { data } = await api.post<Prompt>("/prompts", newPrompt);
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['prompts'] });
+      queryClient.invalidateQueries({ queryKey: ["prompts"] });
     },
   });
 }
@@ -52,12 +52,21 @@ export function useUpdatePrompt() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: Partial<CreatePromptData> }) => {
-      const { data: responseData } = await api.put<Prompt>(`/prompts/${id}`, data);
+    mutationFn: async ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: Partial<CreatePromptData>;
+    }) => {
+      const { data: responseData } = await api.put<Prompt>(
+        `/prompts/${id}`,
+        data,
+      );
       return responseData;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['prompts'] });
+      queryClient.invalidateQueries({ queryKey: ["prompts"] });
     },
   });
 }
@@ -70,7 +79,7 @@ export function useDeletePrompt() {
       await api.delete(`/prompts/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['prompts'] });
+      queryClient.invalidateQueries({ queryKey: ["prompts"] });
     },
   });
 }

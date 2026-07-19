@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { GlassCard } from './GlassCard';
+import React, { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { GlassCard } from "./GlassCard";
 
 interface ModalProps {
   isOpen: boolean;
@@ -34,23 +34,23 @@ export const Modal = ({
   // Handle ESC to close
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (e.key === "Escape" && isOpen) {
         onClose();
       }
     };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
   // Trap focus basic implementation and lock scroll
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
       // Basic focus trap - delay to allow animation
       setTimeout(() => {
         if (modalRef.current) {
           const focusableElements = modalRef.current.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
           );
           if (focusableElements.length) {
             (focusableElements[0] as HTMLElement).focus();
@@ -58,10 +58,10 @@ export const Modal = ({
         }
       }, 100);
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [isOpen]);
 
@@ -85,24 +85,29 @@ export const Modal = ({
           {/* Modal Container */}
           <motion.div
             ref={modalRef}
-            initial={{ opacity: 0, y: '100%', scale: 1 }}
+            initial={{ opacity: 0, y: "100%", scale: 1 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: '100%', scale: 0.95 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            exit={{ opacity: 0, y: "100%", scale: 0.95 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className={cn(
-              'relative w-full max-h-[90vh] overflow-hidden flex flex-col',
-              'sm:max-w-2xl sm:rounded-2xl rounded-t-2xl rounded-b-none',
-              className
+              "relative w-full max-h-[90vh] overflow-hidden flex flex-col",
+              "sm:max-w-2xl sm:rounded-2xl rounded-t-2xl rounded-b-none",
+              className,
             )}
             role="dialog"
             aria-modal="true"
-            aria-labelledby={title ? 'modal-title' : undefined}
+            aria-labelledby={title ? "modal-title" : undefined}
           >
-            <GlassCard className="h-full flex flex-col bg-background/90 md:bg-background/80 shadow-2xl border-white/10" variant="default">
-              
+            <GlassCard
+              className="h-full flex flex-col bg-background/90 md:bg-background/80 shadow-2xl border-white/10"
+              variant="default"
+            >
               {/* Header */}
               <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/[0.02]">
-                <div id="modal-title" className="text-lg font-semibold text-foreground">
+                <div
+                  id="modal-title"
+                  className="text-lg font-semibold text-foreground"
+                >
                   {title}
                 </div>
                 {!hideCloseButton && (
@@ -117,14 +122,12 @@ export const Modal = ({
               </div>
 
               {/* Content area with scrolling */}
-              <div className="p-6 overflow-y-auto">
-                {children}
-              </div>
+              <div className="p-6 overflow-y-auto">{children}</div>
             </GlassCard>
           </motion.div>
         </div>
       )}
     </AnimatePresence>,
-    document.body
+    document.body,
   );
 };

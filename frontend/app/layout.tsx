@@ -1,33 +1,34 @@
-import { AuthProvider } from '@/contexts/AuthContext';
-import { Analytics } from '@vercel/analytics/next';
-import type { Metadata, Viewport } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
-import { AnimatedBackground } from '@/components/ui/AnimatedBackground';
-import QueryProvider from '@/components/providers/QueryProvider';
-import './globals.css';
+import { AuthProvider } from "@/contexts/AuthContext";
+import { Analytics } from "@vercel/analytics/next";
+import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { AnimatedBackground } from "@/components/ui/AnimatedBackground";
+import QueryProvider from "@/components/providers/QueryProvider";
+import "./globals.css";
 
-const geistSans = Geist({ subsets: ['latin'] });
-const geistMono = Geist_Mono({ subsets: ['latin'] });
+const geistSans = Geist({ subsets: ["latin"] });
+const geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'PromptVault AI - Your Premium Prompt Library',
-  description: 'Manage, organize, and share high-quality AI prompts. PromptVault is your complete prompt management solution.',
-  generator: 'v0.app',
+  title: "PromptVault AI - Your Premium Prompt Library",
+  description:
+    "Manage, organize, and share high-quality AI prompts. PromptVault is your complete prompt management solution.",
+  generator: "v0.app",
   icons: {
     icon: [
       {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
+        url: "/icon.svg",
+        type: "image/svg+xml",
       },
     ],
-    apple: '/apple-icon.png',
+    apple: "/apple-icon.png",
   },
 };
 
 export const viewport: Viewport = {
-  colorScheme: 'dark',
-  themeColor: '#09090B',
-  width: 'device-width',
+  colorScheme: "dark",
+  themeColor: "#09090B",
+  width: "device-width",
   initialScale: 1,
 };
 
@@ -38,7 +39,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-background dark" suppressHydrationWarning>
-      <body className={`${geistSans.className} antialiased bg-background text-foreground relative flex min-h-screen flex-col`}>
+      <body
+        className={`${geistSans.className} antialiased bg-background text-foreground relative flex min-h-screen flex-col`}
+      >
         <AuthProvider>
           <QueryProvider>
             <AnimatedBackground />
@@ -49,7 +52,7 @@ export default function RootLayout({
             </div>
           </QueryProvider>
         </AuthProvider>
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        {process.env.NODE_ENV === "production" && <Analytics />}
       </body>
     </html>
   );

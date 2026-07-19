@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, TerminalSquare } from 'lucide-react';
-import { Modal } from '@/components/ui/Modal';
-import { Button } from '@/components/ui/button';
-import { Prompt } from '@/lib/hooks/usePrompts';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Copy, Check, TerminalSquare } from "lucide-react";
+import { Modal } from "@/components/ui/Modal";
+import { Button } from "@/components/ui/button";
+import { Prompt } from "@/lib/hooks/usePrompts";
 
 interface ViewPromptModalProps {
   isOpen: boolean;
@@ -13,7 +13,11 @@ interface ViewPromptModalProps {
   prompt: Prompt | null;
 }
 
-export const ViewPromptModal = ({ isOpen, onClose, prompt }: ViewPromptModalProps) => {
+export const ViewPromptModal = ({
+  isOpen,
+  onClose,
+  prompt,
+}: ViewPromptModalProps) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -23,7 +27,7 @@ export const ViewPromptModal = ({ isOpen, onClose, prompt }: ViewPromptModalProp
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy text: ', err);
+      console.error("Failed to copy text: ", err);
     }
   };
 
@@ -42,14 +46,13 @@ export const ViewPromptModal = ({ isOpen, onClose, prompt }: ViewPromptModalProp
       className="sm:max-w-2xl"
     >
       <div className="space-y-6">
-        
         {/* Header Info */}
         <div>
           <h2 className="text-2xl font-bold text-white mb-2">{prompt.title}</h2>
           {prompt.description && (
             <p className="text-muted-foreground">{prompt.description}</p>
           )}
-          
+
           <div className="flex flex-wrap items-center gap-3 mt-4">
             {prompt.category && (
               <span className="px-3 py-1 text-xs font-medium rounded-full bg-white/10 text-white/90 border border-white/20">
@@ -66,7 +69,9 @@ export const ViewPromptModal = ({ isOpen, onClose, prompt }: ViewPromptModalProp
         <div className="relative group rounded-xl overflow-hidden border border-white/10 bg-black/40">
           {/* Header of Content Box */}
           <div className="flex items-center justify-between px-4 py-2 bg-white/[0.02] border-b border-white/10">
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Content</span>
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              Content
+            </span>
             <Button
               variant="ghost"
               size="sm"
@@ -100,7 +105,7 @@ export const ViewPromptModal = ({ isOpen, onClose, prompt }: ViewPromptModalProp
               </AnimatePresence>
             </Button>
           </div>
-          
+
           {/* Actual Content */}
           <div className="p-4 overflow-y-auto max-h-[40vh] custom-scrollbar">
             <pre className="text-sm text-white/90 whitespace-pre-wrap font-sans leading-relaxed">

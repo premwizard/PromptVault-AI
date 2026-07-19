@@ -45,7 +45,9 @@ We take code quality and security extremely seriously. Our backend CI/CD pipelin
   - **Lines of Code Scanned**: `516`
   - *All application code is verified free of common security flaws (CWEs).*
 - **Static Type Checking**: `0` errors across `21` source files (Verified by `mypy` & `pyright`).
-- **Dependency Auditing**: Regular scanning via `pip-audit` and `safety` to prevent supply chain attacks.
+- **Dependency Auditing**: Continuously scanned via `pip-audit`. Currently passing with minimal legacy dependency risk after aggressive auto-patching.
+- **Cyclomatic Complexity (Radon)**: Codebase maintains an `A` to `B` complexity grade, ensuring high maintainability and simple logic branching.
+- **Testing & Coverage**: Integrated with `pytest` and `pytest-cov` to ensure logic changes are thoroughly covered and verified.
 - **Formatting**: Fully compliant with `ruff` strict formatting guidelines.
 
 ---

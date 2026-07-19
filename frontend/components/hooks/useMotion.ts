@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from "framer-motion";
 
 /**
  * Hook to respect user's motion preferences
  * Returns modified animation config if user prefers reduced motion
  */
-export const useMotion = (config: any = {}) => {
+const useMotion = (config: any = {}) => {
   const prefersReducedMotion = useReducedMotion();
 
   if (prefersReducedMotion) {
     return {
       ...config,
-      initial: 'animate',
-      animate: 'animate',
-      exit: 'animate',
+      initial: "animate",
+      animate: "animate",
+      exit: "animate",
       transition: { duration: 0 },
     };
   }
@@ -25,7 +25,7 @@ export const useMotion = (config: any = {}) => {
 /**
  * Hook to get animation variants with reduced motion support
  */
-export const useAnimationVariants = (variants: Record<string, any>) => {
+const useAnimationVariants = (variants: Record<string, any>) => {
   const prefersReducedMotion = useReducedMotion();
 
   if (prefersReducedMotion) {
@@ -37,7 +37,7 @@ export const useAnimationVariants = (variants: Record<string, any>) => {
         };
         return acc;
       },
-      {} as Record<string, any>
+      {} as Record<string, any>,
     );
   }
 

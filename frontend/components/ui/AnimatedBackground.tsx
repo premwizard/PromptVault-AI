@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useMotionPreferences } from '@/components/hooks/useMotion';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useMotionPreferences } from "@/components/hooks/useMotion";
 
 export function AnimatedBackground() {
   const prefersReducedMotion = useMotionPreferences();
@@ -32,7 +32,7 @@ export function AnimatedBackground() {
         transition={{
           duration: 15,
           repeat: Infinity,
-          ease: 'easeInOut',
+          ease: "easeInOut",
         }}
       />
 
@@ -50,7 +50,7 @@ export function AnimatedBackground() {
         transition={{
           duration: 20,
           repeat: Infinity,
-          ease: 'easeInOut',
+          ease: "easeInOut",
           delay: 2,
         }}
       />
@@ -69,37 +69,38 @@ export function AnimatedBackground() {
         transition={{
           duration: 18,
           repeat: Infinity,
-          ease: 'easeInOut',
+          ease: "easeInOut",
           delay: 4,
         }}
       />
 
       {/* Floating particles */}
       <div className="absolute inset-0">
-        {isMounted && [...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-accent-blue/40 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={
-              prefersReducedMotion
-                ? {}
-                : {
-                    y: [0, -100, 0],
-                    opacity: [0, 1, 0],
-                  }
-            }
-            transition={{
-              duration: 5 + i * 0.5,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay: i * 0.5,
-            }}
-          />
-        ))}
+        {isMounted &&
+          [...Array(6)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-accent-blue/40 rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={
+                prefersReducedMotion
+                  ? {}
+                  : {
+                      y: [0, -100, 0],
+                      opacity: [0, 1, 0],
+                    }
+              }
+              transition={{
+                duration: 5 + i * 0.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: i * 0.5,
+              }}
+            />
+          ))}
       </div>
 
       {/* Grid overlay - subtle */}
@@ -107,7 +108,7 @@ export function AnimatedBackground() {
         className="absolute inset-0 opacity-[0.02]"
         style={{
           backgroundImage: `linear-gradient(0deg, transparent calc(100% - 1px), rgba(255,255,255,.1) 1px), linear-gradient(90deg, transparent calc(100% - 1px), rgba(255,255,255,.1) 1px)`,
-          backgroundSize: '50px 50px',
+          backgroundSize: "50px 50px",
         }}
       />
     </div>

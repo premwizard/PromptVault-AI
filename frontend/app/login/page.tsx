@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { Sparkles, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useAuth } from '@/contexts/AuthContext';
-import { authService } from '@/services/authService';
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { Sparkles, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "@/contexts/AuthContext";
+import { authService } from "@/services/authService";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { login } = useAuth();
@@ -21,14 +21,14 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError("");
 
     try {
       const result = await authService.login({ email, password });
       login(result.access_token, result.user);
-      router.push('/dashboard');
+      router.push("/dashboard");
     } catch (err) {
-      setError('Invalid email or password');
+      setError("Invalid email or password");
     } finally {
       setIsLoading(false);
     }
@@ -55,7 +55,9 @@ export default function LoginPage() {
             </div>
 
             <div className="mb-8">
-              <h1 className="text-3xl font-bold tracking-tight mb-2">Welcome back</h1>
+              <h1 className="text-3xl font-bold tracking-tight mb-2">
+                Welcome back
+              </h1>
               <p className="text-muted-foreground text-sm">
                 Enter your credentials to access your workspace
               </p>
@@ -63,7 +65,9 @@ export default function LoginPage() {
 
             <form onSubmit={handleLogin} className="space-y-5">
               <div className="space-y-1">
-                <label className="text-sm font-medium text-white/90">Email</label>
+                <label className="text-sm font-medium text-white/90">
+                  Email
+                </label>
                 <Input
                   type="email"
                   value={email}
@@ -74,8 +78,13 @@ export default function LoginPage() {
               </div>
               <div className="space-y-1">
                 <div className="flex justify-between items-center">
-                  <label className="text-sm font-medium text-white/90">Password</label>
-                  <Link href="#" className="text-xs text-accent-blue hover:text-accent-blue/80 transition-colors">
+                  <label className="text-sm font-medium text-white/90">
+                    Password
+                  </label>
+                  <Link
+                    href="#"
+                    className="text-xs text-accent-blue hover:text-accent-blue/80 transition-colors"
+                  >
                     Forgot password?
                   </Link>
                 </div>
@@ -89,9 +98,9 @@ export default function LoginPage() {
               </div>
 
               {error && (
-                <motion.p 
-                  initial={{ opacity: 0, height: 0 }} 
-                  animate={{ opacity: 1, height: 'auto' }} 
+                <motion.p
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
                   className="text-destructive text-sm"
                 >
                   {error}
@@ -103,14 +112,19 @@ export default function LoginPage() {
                 className="w-full h-11 text-base mt-2"
                 disabled={isLoading}
               >
-                {isLoading ? 'Signing in...' : 'Sign In'}
-                {!isLoading && <ArrowRight className="w-4 h-4 ml-2 opacity-70" />}
+                {isLoading ? "Signing in..." : "Sign In"}
+                {!isLoading && (
+                  <ArrowRight className="w-4 h-4 ml-2 opacity-70" />
+                )}
               </Button>
             </form>
 
             <p className="text-center text-sm text-muted-foreground mt-8">
-              Don't have an account?{' '}
-              <Link href="/register" className="text-accent-blue hover:text-white transition-colors font-medium">
+              Don&apos;t have an account?{" "}
+              <Link
+                href="/register"
+                className="text-accent-blue hover:text-white transition-colors font-medium"
+              >
                 Create one now
               </Link>
             </p>
@@ -125,7 +139,7 @@ export default function LoginPage() {
           <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-accent-blue/30 rounded-full blur-[120px] mix-blend-screen" />
           <div className="absolute bottom-[20%] left-[10%] w-[600px] h-[600px] bg-accent-purple/20 rounded-full blur-[150px] mix-blend-screen" />
         </div>
-        
+
         <div className="relative z-10 max-w-lg">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -137,13 +151,18 @@ export default function LoginPage() {
               <Sparkles className="w-6 h-6 text-accent-blue" />
             </div>
             <h2 className="text-2xl font-bold text-white mb-4">
-              "PromptVault completely changed how my team manages AI workflows. We save hours every week."
+              &quot;PromptVault completely changed how my team manages AI
+              workflows. We save hours every week.&quot;
             </h2>
             <div className="flex items-center gap-3 mt-8">
               <div className="w-10 h-10 rounded-full bg-white/10 border border-white/20" />
               <div>
-                <div className="text-sm font-medium text-white">Sarah Jenkins</div>
-                <div className="text-xs text-white/50">Lead AI Engineer at TechFlow</div>
+                <div className="text-sm font-medium text-white">
+                  Sarah Jenkins
+                </div>
+                <div className="text-xs text-white/50">
+                  Lead AI Engineer at TechFlow
+                </div>
               </div>
             </div>
           </motion.div>

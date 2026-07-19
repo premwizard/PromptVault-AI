@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import api from '../api';
+import { useQuery } from "@tanstack/react-query";
+import api from "../api";
 
 export interface Collection {
   id: string;
@@ -11,12 +11,12 @@ export interface Collection {
 
 export function useCollections() {
   return useQuery({
-    queryKey: ['collections'],
+    queryKey: ["collections"],
     queryFn: async () => {
       // In reality, this would hit /collections
       // Since it's not implemented yet, we return empty arrays if it fails
       try {
-        const { data } = await api.get<Collection[]>('/collections');
+        const { data } = await api.get<Collection[]>("/collections");
         return data;
       } catch {
         return [];
