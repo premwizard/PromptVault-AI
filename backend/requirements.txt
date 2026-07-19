@@ -70,7 +70,7 @@ docstring_parser==0.18.0
 dparse==0.6.4
 duckduckgo_search==8.1.1
 durationpy==0.10
-ecdsa==0.20.0
+ecdsa==0.19.2
 email-validator==2.3.0
 etelemetry==0.3.1
 eventlet==0.40.4
