@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "../api";
 
-export interface Collection {
+interface Collection {
   id: string;
   name: string;
   description: string;

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "../api";
 
-export interface DashboardStats {
+interface DashboardStats {
   totalPrompts: number;
   favoritePrompts: number;
   usageThisMonth: number;

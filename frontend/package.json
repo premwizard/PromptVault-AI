@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "check-circular": "madge --circular --extensions ts,tsx app components lib"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
@@ -30,14 +31,17 @@
     "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^4.1.10",
     "eslint": "^8.57.0",
     "eslint-config-next": "^15.0.0",
     "knip": "^6.27.0",
+    "madge": "^8.0.0",
     "postcss": "^8.5.10",
     "postcss-load-config": "^6.0.1",
     "prettier": "^3.9.5",
     "tailwindcss": "^4.3.3",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "vitest": "^4.1.10"
   },
   "overrides": {
     "postcss": "^8.5.10"

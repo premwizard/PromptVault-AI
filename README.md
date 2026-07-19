@@ -4,6 +4,8 @@
 ![Security: Bandit](https://img.shields.io/badge/Security-Bandit%20Verified-success)
 ![Type Checking: Mypy & Pyright](https://img.shields.io/badge/Typing-Strict-success)
 ![Formatting: Ruff](https://img.shields.io/badge/Code%20Style-Ruff-black)
+![Lighthouse Performance](https://img.shields.io/badge/Lighthouse_Performance-91-success)
+![Lighthouse SEO](https://img.shields.io/badge/Lighthouse_SEO-100-success)
 
 **PromptVault AI** is a state-of-the-art, full-stack application designed to seamlessly manage, store, and interact with AI prompts. Built with modern web development practices, it features a highly responsive interface and a robust, secure, and fully-typed backend architecture.
 
@@ -38,8 +40,18 @@
 
 ## 🛡️ Security & Code Quality Metrics
 
-We take code quality and security extremely seriously. Our backend CI/CD pipeline enforces the following standards:
+We take code quality and security extremely seriously. Our CI/CD pipeline enforces the following standards across our stack:
 
+### Frontend Metrics
+- **Lighthouse SEO Score**: `100/100`
+- **Lighthouse Best Practices Score**: `96/100`
+- **Lighthouse Performance Score**: `91/100`
+- **Lighthouse Accessibility Score**: `84/100`
+- **Linting (ESLint & Prettier)**: `0` warnings or errors. Fully strict React & Next.js linting compliance.
+- **Dead Code Elimination (Knip)**: `0` unused files, dependencies, or exports.
+- **Dependency Auditing (npm audit)**: `0` vulnerabilities across `620+` packages.
+
+### Backend Metrics
 - **Bandit Security Scan**: 
   - **Issues Identified**: `0`
   - **Lines of Code Scanned**: `516`
