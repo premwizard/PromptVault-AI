@@ -172,7 +172,7 @@ Flask==3.1.3
 
 flask-cors==6.0.0
 
-Flask-JWT-Extended==4.4.4
+Flask-JWT-Extended>=4.5.2
 
 Flask-Limiter==4.1.1
 
@@ -680,9 +680,7 @@ pytokens==0.4.1
 
 pytz==2025.1
 
-pywin32==310; sys_platform == 'win32'
 
-pywinpty==2.0.15; sys_platform == 'win32'
 
 pyxnat==1.6.3
 
@@ -860,7 +858,6 @@ uvicorn==0.35.0
 
 virtualenv==20.36.1
 
-virtualenvwrapper-win==1.2.7; sys_platform == 'win32'
 
 vulture==2.16
 
