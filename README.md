@@ -6,125 +6,131 @@
 ![Formatting: Ruff](https://img.shields.io/badge/Code%20Style-Ruff-black)
 ![Lighthouse Performance](https://img.shields.io/badge/Lighthouse_Performance-91-success)
 ![Lighthouse SEO](https://img.shields.io/badge/Lighthouse_SEO-100-success)
+![CI/CD Frontend](https://github.com/yourusername/promptvault/actions/workflows/ci-frontend.yml/badge.svg)
+![CI/CD Backend](https://github.com/yourusername/promptvault/actions/workflows/ci-backend.yml/badge.svg)
 
-**PromptVault AI** is a state-of-the-art, full-stack application designed to seamlessly manage, store, and interact with AI prompts. Built with modern web development practices, it features a highly responsive interface and a robust, secure, and fully-typed backend architecture.
+**PromptVault AI** is a state-of-the-art, full-stack application designed to seamlessly manage, store, and interact with AI prompts. Built with modern web development practices, it features a highly responsive interface, robust backend architecture, and a production-ready DevOps pipeline.
 
 ---
 
 ## ✨ Features
 
-- **Semantic Search**: Powered by `pgvector` for advanced prompt discovery based on meaning, not just keywords.
-- **Prompt Management**: Create, edit, tag, and categorize prompts with a beautiful and intuitive UI.
-- **Glassmorphism Design**: A stunning, modern frontend utilizing glass-like transparent components and micro-interactions.
-- **Rock-Solid Security**: Zero identified security vulnerabilities in application logic (verified via Bandit).
-- **Fully Typed**: 100% type-checked backend using both `mypy` and `pyright` to eliminate runtime errors.
+- **Semantic Search**: Powered by `pgvector` for advanced prompt discovery.
+- **Prompt Management**: Create, edit, tag, and categorize prompts with an intuitive UI.
+- **Glassmorphism Design**: A stunning, modern frontend utilizing glass-like transparent components.
+- **Production Ready**: Fully containerized with Docker, multi-stage builds, and CI/CD pipelines.
+- **Rock-Solid Security**: Automated Bandit, Pip-audit, and npm audits on every push.
+- **Fully Typed**: 100% type-checked backend using `mypy` and `pyright`.
 
 ---
 
-## 🛠️ Tech Stack
+## 🏗️ Architecture & Tech Stack
 
 ### Frontend
-- **Framework**: [Next.js](https://nextjs.org/) (React)
-- **Styling**: Vanilla CSS & TailwindCSS (for utility functions)
-- **Design System**: Custom Glassmorphism UI
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+- **Styling**: TailwindCSS 4 & Vanilla CSS
+- **Containerization**: Multi-stage Docker build utilizing Next.js `standalone` mode.
 
 ### Backend
-- **Framework**: [FastAPI](https://fastapi.tiangolo.com/) (Python)
-- **Database**: PostgreSQL with `pgvector`
+- **Framework**: [FastAPI](https://fastapi.tiangolo.com/) (Python 3.11)
+- **Database**: PostgreSQL with `pgvector` extension
 - **ORM**: [SQLAlchemy 2.0](https://www.sqlalchemy.org/) (Async)
-- **Type Checking**: `mypy`, `pyright`
-- **Formatting/Linting**: `ruff`
-- **Security Scanners**: `bandit`, `pip-audit`, `safety`
+- **Containerization**: Multi-stage Docker build running non-root Uvicorn processes.
+
+### Infrastructure
+- **Container Orchestration**: Docker Compose
+- **CI/CD**: GitHub Actions (Linting, Testing, Security Scanning, Build Verification)
 
 ---
 
 ## 🛡️ Security & Code Quality Metrics
 
-We take code quality and security extremely seriously. Our CI/CD pipeline enforces the following standards across our stack:
+Our CI/CD pipeline enforces the following standards across our stack:
 
 ### Frontend Metrics
 - **Lighthouse SEO Score**: `100/100`
 - **Lighthouse Best Practices Score**: `96/100`
 - **Lighthouse Performance Score**: `91/100`
 - **Lighthouse Accessibility Score**: `84/100`
-- **Linting (ESLint & Prettier)**: `0` warnings or errors. Fully strict React & Next.js linting compliance.
-- **Dead Code Elimination (Knip)**: `0` unused files, dependencies, or exports.
-- **Dependency Auditing (npm audit)**: `0` vulnerabilities across `620+` packages.
+- **Linting**: `0` warnings or errors (ESLint & Prettier).
+- **Dead Code Elimination**: `0` unused files (Knip).
+- **Dependency Auditing**: `0` vulnerabilities (npm audit).
 
 ### Backend Metrics
-- **Bandit Security Scan**: 
-  - **Issues Identified**: `0`
-  - **Lines of Code Scanned**: `516`
-  - *All application code is verified free of common security flaws (CWEs).*
-- **Static Type Checking**: `0` errors across `21` source files (Verified by `mypy` & `pyright`).
-- **Dependency Auditing**: Continuously scanned via `pip-audit`. Currently passing with minimal legacy dependency risk after aggressive auto-patching.
-- **Cyclomatic Complexity (Radon)**: Codebase maintains an `A` to `B` complexity grade, ensuring high maintainability and simple logic branching.
-- **Testing & Coverage**: Integrated with `pytest` and `pytest-cov` to ensure logic changes are thoroughly covered and verified.
-- **Formatting**: Fully compliant with `ruff` strict formatting guidelines.
+- **Bandit Security Scan**: `0` issues identified.
+- **Static Type Checking**: `0` errors (mypy).
+- **Dependency Auditing**: Continuously scanned via `pip-audit`.
+- **Formatting**: Fully compliant with `ruff` strict formatting.
+- **Health Checks**: Included `/health` endpoint for readiness and database liveness.
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v18+)
-- Python 3.11+
-- PostgreSQL database with the `pgvector` extension installed.
+- Docker & Docker Compose
+- Node.js (v18+) (For local development without Docker)
+- Python 3.11+ (For local development without Docker)
 
-### Backend Setup
+### 🐳 Run with Docker (Recommended)
 
-1. Navigate to the backend directory:
+1. Clone the repository and navigate to the root directory.
+2. Copy the environment variables:
    ```bash
-   cd backend
+   cp .env.example .env
    ```
-2. Create and activate a virtual environment:
+3. Start the entire stack:
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   docker-compose up --build
    ```
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Set up your `.env` file (see `.env.example` for required variables like `DATABASE_URL` and `OPENAI_API_KEY`).
-5. Run database migrations:
-   ```bash
-   alembic upgrade head
-   ```
-6. Start the FastAPI server:
-   ```bash
-   uvicorn app.main:app --reload
-   ```
+4. Access the application:
+   - **Frontend**: http://localhost:3000
+   - **Backend API**: http://localhost:8000
+   - **API Docs**: http://localhost:8000/docs
 
-### Frontend Setup
+---
 
-1. Navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+## 🚢 Deployment
+
+### 1. Frontend (Vercel)
+The frontend is optimized for deployment on Vercel. 
+- Connect your GitHub repository to Vercel.
+- The build command is `npm run build` and the output directory is automatically detected.
+- Ensure `NEXT_PUBLIC_API_URL` is set in the Vercel Environment Variables to point to your backend.
+
+### 2. Backend (Render / Railway)
+The backend is fully containerized and ready for PaaS deployment.
+- Connect your repository to Render or Railway.
+- Choose **Deploy from Dockerfile**.
+- Set the Root Directory to `backend/`.
+- Set `DATABASE_URL` and `ENVIRONMENT=production` in the environment variables.
+
+### 3. Database (Supabase)
+We recommend Supabase for a managed PostgreSQL instance with `pgvector` built-in.
+- Create a new Supabase project.
+- Obtain the database connection string and use it for your Backend `DATABASE_URL`.
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions! Please feel free to submit a Pull Request. Make sure to run the following checks before committing your backend code:
+We welcome contributions! Please feel free to submit a Pull Request. Make sure to run the following checks before committing:
+
+**Backend:**
 ```bash
-ruff format .
 ruff check .
+ruff format .
 mypy .
-pyright
-bandit -r app\
+pytest
+```
+
+**Frontend:**
+```bash
+npm run lint
+npx prettier --write .
+npx knip
+npx vitest run
 ```
 
 ## 📄 License
-
 This project is licensed under the MIT License - see the LICENSE file for details.
