@@ -41,7 +41,7 @@ cachetools==5.5.2
 certifi==2025.1.31
 cffi==2.1.0
 charset-normalizer==3.4.1
-chromadb==1.6.0
+chromadb==1.5.9
 ci-info==0.3.0
 click==8.4.2
 cloudpickle==3.1.2
