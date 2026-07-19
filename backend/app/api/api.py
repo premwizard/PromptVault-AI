@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+
 from app.api.endpoints import prompts
 
 api_router = APIRouter()

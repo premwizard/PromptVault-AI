@@ -1,9 +1,12 @@
 from typing import List
-from sqlalchemy.ext.asyncio import AsyncSession
+
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.crud.base import CRUDBase
 from app.models.prompt import Prompt
 from app.schemas.domain import PromptCreate, PromptUpdate
+
 
 class CRUDPrompt(CRUDBase[Prompt, PromptCreate, PromptUpdate]):
     async def get_multi_by_user(
@@ -16,5 +19,6 @@ class CRUDPrompt(CRUDBase[Prompt, PromptCreate, PromptUpdate]):
             .limit(limit)
         )
         return list(result.scalars().all())
+
 
 prompt = CRUDPrompt(Prompt)

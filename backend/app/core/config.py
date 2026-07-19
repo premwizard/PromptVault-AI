@@ -1,12 +1,13 @@
-import os
 from typing import List, Union
+
 from pydantic import AnyHttpUrl, validator
 from pydantic_settings import BaseSettings
+
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "PromptVault AI"
     API_V1_STR: str = "/api/v1"
-    
+
     # CORS
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
 
@@ -20,11 +21,11 @@ class Settings(BaseSettings):
 
     # Postgres Database
     DATABASE_URL: str
-    
+
     # Authentication
     SECRET_KEY: str = "your-super-secret-key-change-me"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7 # 7 days
-    
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
+
     # AI Providers
     OPENAI_API_KEY: str = ""
     ANTHROPIC_API_KEY: str = ""
@@ -33,4 +34,5 @@ class Settings(BaseSettings):
         case_sensitive = True
         env_file = ".env"
 
-settings = Settings()
+
+settings = Settings()  # type: ignore

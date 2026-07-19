@@ -1,12 +1,15 @@
-from pydantic import BaseModel, ConfigDict, Field
-from uuid import UUID
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional
+from uuid import UUID
+
+from pydantic import BaseModel, ConfigDict, Field
+
 
 class UserSettingsBase(BaseModel):
     theme: str = "system"
     preferred_ai_provider: str = "openai"
     ai_temperature: float = 0.7
+
 
 class UserSettingsResponse(UserSettingsBase):
     id: UUID
@@ -14,15 +17,18 @@ class UserSettingsResponse(UserSettingsBase):
 
     model_config = ConfigDict(from_attributes=True)
 
+
 class UserBase(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     profile_image_url: Optional[str] = None
 
+
 class UserCreate(UserBase):
     email: str
     username: str
     password: str
+
 
 class UserResponse(UserBase):
     id: UUID
@@ -34,14 +40,17 @@ class UserResponse(UserBase):
 
     model_config = ConfigDict(from_attributes=True)
 
+
 class CategoryBase(BaseModel):
     name: str
     color: Optional[str] = None
     icon: Optional[str] = None
     order: Optional[int] = None
 
+
 class CategoryCreate(CategoryBase):
     pass
+
 
 class CategoryResponse(CategoryBase):
     id: UUID
@@ -50,13 +59,16 @@ class CategoryResponse(CategoryBase):
 
     model_config = ConfigDict(from_attributes=True)
 
+
 class CollectionBase(BaseModel):
     name: str
     description: Optional[str] = None
     is_public: bool = False
 
+
 class CollectionCreate(CollectionBase):
     pass
+
 
 class CollectionResponse(CollectionBase):
     id: UUID
@@ -65,6 +77,7 @@ class CollectionResponse(CollectionBase):
     updated_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
 
 class PromptBase(BaseModel):
     title: str = Field(..., max_length=255)
@@ -75,8 +88,10 @@ class PromptBase(BaseModel):
     category_id: Optional[UUID] = None
     collection_id: Optional[UUID] = None
 
+
 class PromptCreate(PromptBase):
     pass
+
 
 class PromptUpdate(BaseModel):
     title: Optional[str] = Field(None, max_length=255)
@@ -87,6 +102,7 @@ class PromptUpdate(BaseModel):
     category_id: Optional[UUID] = None
     collection_id: Optional[UUID] = None
 
+
 class PromptResponse(PromptBase):
     id: UUID
     user_id: UUID
@@ -94,5 +110,5 @@ class PromptResponse(PromptBase):
     created_at: datetime
     updated_at: datetime
     # We omit embeddings from standard response
-    
+
     model_config = ConfigDict(from_attributes=True)

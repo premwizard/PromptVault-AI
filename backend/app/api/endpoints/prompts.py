@@ -1,14 +1,17 @@
 from typing import Any, List
 from uuid import UUID
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.crud import prompt as crud_prompt
-from app.schemas.domain import PromptResponse, PromptCreate, PromptUpdate
 from app.dependencies.db import get_db
+from app.schemas.domain import PromptCreate, PromptResponse, PromptUpdate
 
 router = APIRouter()
 
 # TODO: Add current_user dependency to endpoints
+
 
 @router.get("/", response_model=List[PromptResponse])
 async def read_prompts(
@@ -22,6 +25,7 @@ async def read_prompts(
     prompts = await crud_prompt.get_multi(db, skip=skip, limit=limit)
     return prompts
 
+
 @router.post("/", response_model=PromptResponse)
 async def create_prompt(
     *,
@@ -34,13 +38,15 @@ async def create_prompt(
     # Requires user context to populate user_id
     # For now, mocking with a fixed UUID until Auth is implemented
     import uuid
+
     mock_user_id = uuid.uuid4()
-    
+
     prompt = await crud_prompt.create(db=db, obj_in=prompt_in)
     prompt.user_id = mock_user_id
     await db.commit()
     await db.refresh(prompt)
     return prompt
+
 
 @router.get("/{id}", response_model=PromptResponse)
 async def read_prompt(
@@ -55,6 +61,7 @@ async def read_prompt(
     if not prompt:
         raise HTTPException(status_code=404, detail="Prompt not found")
     return prompt
+
 
 @router.put("/{id}", response_model=PromptResponse)
 async def update_prompt(
@@ -71,6 +78,7 @@ async def update_prompt(
         raise HTTPException(status_code=404, detail="Prompt not found")
     prompt = await crud_prompt.update(db=db, db_obj=prompt, obj_in=prompt_in)
     return prompt
+
 
 @router.delete("/{id}", response_model=PromptResponse)
 async def delete_prompt(
