@@ -45,7 +45,7 @@ export default function RootLayout({
         <AuthProvider>
           <QueryProvider>
             <AnimatedBackground />
-            <div className="relative z-0 flex-1 flex flex-col md:pl-64 transition-all duration-300">
+            <div className="relative z-0 flex-1 flex flex-col transition-all duration-300">
               <main className="flex-1 overflow-y-auto overflow-x-hidden">
                 {children}
               </main>
