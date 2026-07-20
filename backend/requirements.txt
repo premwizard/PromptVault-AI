@@ -215,7 +215,7 @@ GitPython==3.1.50
 google-adk==2.4.0
 
 
-google-ai-generativelanguage==0.6.15
+google-ai-generativelanguage
 
 
 google-api-core
@@ -234,9 +234,9 @@ google-cloud-audit-log
 
 google-cloud-bigquery
 
-google-cloud-bigquery-storage==2.39.0
+google-cloud-bigquery-storage
 
-google-cloud-bigtable==2.41.0
+google-cloud-bigtable
 
 
 google-cloud-core
