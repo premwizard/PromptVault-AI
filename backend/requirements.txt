@@ -212,10 +212,10 @@ gitdb==4.0.12
 
 GitPython==3.1.50
 
-google-adk
+google-adk==2.4.0
 
 
-google-ai-generativelanguage
+google-ai-generativelanguage==0.6.15
 
 
 google-api-core
@@ -234,9 +234,9 @@ google-cloud-audit-log
 
 google-cloud-bigquery
 
-google-cloud-bigquery-storage
+google-cloud-bigquery-storage==2.39.0
 
-google-cloud-bigtable
+google-cloud-bigtable==2.41.0
 
 
 google-cloud-core
@@ -245,9 +245,9 @@ google-cloud-dataplex
 
 google-cloud-discoveryengine
 
-google-cloud-firestore
+google-cloud-firestore==2.28.0
 
-google-cloud-iam
+google-cloud-iam==2.12.0
 
 google-cloud-logging
 
@@ -263,15 +263,15 @@ google-cloud-spanner
 
 google-cloud-speech
 
-google-cloud-storage
+google-cloud-storage==3.12.1
 
-google-cloud-trace
+google-cloud-trace==1.19.0
 
 google-crc32c
 
 google-genai
 
-google-generativeai
+google-generativeai==0.8.5
 
 google-pasta
 
@@ -511,27 +511,27 @@ openai==2.44.0
 
 opencv-python==4.11.0.86
 
-opentelemetry-api==1.37.0
+opentelemetry-api
 
-opentelemetry-exporter-gcp-logging==1.11.0a0
+opentelemetry-exporter-gcp-logging
 
-opentelemetry-exporter-gcp-monitoring==1.12.0a0
+opentelemetry-exporter-gcp-monitoring
 
-opentelemetry-exporter-gcp-trace==1.12.0
+opentelemetry-exporter-gcp-trace
 
-opentelemetry-exporter-otlp-proto-common==1.37.0
+opentelemetry-exporter-otlp-proto-common
 
-opentelemetry-exporter-otlp-proto-grpc==1.37.0
+opentelemetry-exporter-otlp-proto-grpc
 
-opentelemetry-exporter-otlp-proto-http==1.37.0
+opentelemetry-exporter-otlp-proto-http
 
-opentelemetry-proto==1.37.0
+opentelemetry-proto
 
-opentelemetry-resourcedetector-gcp==1.12.0a0
+opentelemetry-resourcedetector-gcp
 
-opentelemetry-sdk==1.37.0
+opentelemetry-sdk
 
-opentelemetry-semantic-conventions==0.58b0
+opentelemetry-semantic-conventions
 
 opt_einsum==3.4.0
 
