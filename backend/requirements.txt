@@ -214,67 +214,70 @@ GitPython==3.1.50
 
 google-adk
 
+
 google-ai-generativelanguage
 
-google-api-core==2.25.2
 
-google-api-python-client==2.184.0
+google-api-core
 
-google-auth==2.48.0
+google-api-python-client
 
-google-auth-httplib2==0.2.0
+google-auth
 
-google-cloud-aiplatform==1.159.0
+google-auth-httplib2
 
-google-cloud-appengine-logging==1.10.0
+google-cloud-aiplatform
 
-google-cloud-audit-log==0.6.0
+google-cloud-appengine-logging
 
-google-cloud-bigquery==3.42.1
+google-cloud-audit-log
 
-google-cloud-bigquery-storage==2.39.0
+google-cloud-bigquery
+
+google-cloud-bigquery-storage
 
 google-cloud-bigtable
 
-google-cloud-core==2.5.1
 
-google-cloud-dataplex==2.20.0
+google-cloud-core
 
-google-cloud-discoveryengine==0.13.12
+google-cloud-dataplex
 
-google-cloud-firestore==2.27.0
+google-cloud-discoveryengine
 
-google-cloud-iam==2.24.0
+google-cloud-firestore
 
-google-cloud-logging==3.16.0
+google-cloud-iam
 
-google-cloud-monitoring==2.31.0
+google-cloud-logging
 
-google-cloud-pubsub==2.39.0
+google-cloud-monitoring
 
-google-cloud-resource-manager==1.18.0
+google-cloud-pubsub
 
-google-cloud-secret-manager==2.29.0
+google-cloud-resource-manager
 
-google-cloud-spanner==3.69.0
+google-cloud-secret-manager
 
-google-cloud-speech==2.40.0
+google-cloud-spanner
 
-google-cloud-storage==3.4.1
+google-cloud-speech
 
-google-cloud-trace==1.20.0
+google-cloud-storage
 
-google-crc32c==1.8.0
+google-cloud-trace
 
-google-genai==1.68.0
+google-crc32c
 
-google-generativeai==0.3.0
+google-genai
 
-google-pasta==0.2.0
+google-generativeai
 
-google-resumable-media==2.8.2
+google-pasta
 
-googleapis-common-protos==1.70.0
+google-resumable-media
+
+googleapis-common-protos
 
 graphviz==0.21
 
@@ -282,9 +285,9 @@ greenlet==3.2.4
 
 groq==1.1.2
 
-grpc-google-iam-v1==0.14.4
+grpc-google-iam-v1
 
-grpc-interceptor==0.15.4
+grpc-interceptor
 
 grpcio==1.75.1
 
@@ -592,7 +595,7 @@ prompt_toolkit==3.0.50
 
 propcache==0.3.2
 
-proto-plus==1.26.1
+proto-plus
 
 protobuf
 
@@ -679,8 +682,6 @@ python-socketio==5.16.2
 pytokens==0.4.1
 
 pytz==2025.1
-
-
 
 pyxnat==1.6.3
 
@@ -857,7 +858,6 @@ uuid_utils==0.17.0
 uvicorn==0.35.0
 
 virtualenv==20.36.1
-
 
 vulture==2.16
 
