@@ -13,7 +13,7 @@ router = APIRouter()
 # TODO: Add current_user dependency to endpoints
 
 
-@router.get("/", response_model=List[PromptResponse])
+@router.get("", response_model=List[PromptResponse])
 async def read_prompts(
     db: AsyncSession = Depends(get_db),
     skip: int = Query(0, ge=0),
@@ -26,7 +26,7 @@ async def read_prompts(
     return prompts
 
 
-@router.post("/", response_model=PromptResponse)
+@router.post("", response_model=PromptResponse)
 async def create_prompt(
     *,
     db: AsyncSession = Depends(get_db),
