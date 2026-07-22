@@ -123,7 +123,7 @@ export default function FavoritesPage() {
                   description={prompt.description}
                   category={prompt.category?.name || "Uncategorized"}
                   aiModel={prompt.ai_model}
-                  tags={prompt.tags.map((t) => t.name)}
+                  tags={prompt.tags ? prompt.tags.map((t) => t.name) : []}
                   favorited={true}
                   usageCount={prompt.usage_count}
                   onClick={() => handleView(prompt)}

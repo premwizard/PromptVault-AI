@@ -246,7 +246,7 @@ export const PromptCardTilt = React.memo(
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2 mb-4">
-                {tags.slice(0, 3).map((tag) => (
+                {(tags || []).slice(0, 3).map((tag) => (
                   <span
                     key={tag}
                     className="inline-block px-2 py-1 text-xs rounded-full bg-white/5 text-muted-foreground border border-white/10 hover:border-accent-blue/50 transition-colors"
@@ -254,9 +254,9 @@ export const PromptCardTilt = React.memo(
                     #{tag}
                   </span>
                 ))}
-                {tags.length > 3 && (
+                {(tags || []).length > 3 && (
                   <span className="text-xs text-muted-foreground py-1">
-                    +{tags.length - 3}
+                    +{(tags || []).length - 3}
                   </span>
                 )}
               </div>

@@ -8,7 +8,7 @@ export interface Prompt {
   content: string;
   ai_model: string;
   category: { id: string; name: string; color: string; icon: string } | null;
-  tags: { id: string; name: string }[];
+  tags?: { id: string; name: string }[];
   usage_count: number;
   status: string;
   created_at: string;
