@@ -613,7 +613,7 @@ py-serializable==2.1.0
 
 pyarrow==23.0.1
 
-pyasn1==0.6.3
+pyasn1==0.6.4
 
 pyasn1_modules==0.4.2
 
