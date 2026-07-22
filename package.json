@@ -4,9 +4,17 @@
   "description": "Root scripts for PromptVault AI",
   "scripts": {
     "dev:frontend": "npm run dev --prefix frontend",
-    "dev:backend": "cd backend && uvicorn app.main:app --reload",
+    "dev:backend": "cd backend && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000",
+    "dev": "npm run docker:up",
     "docker:up": "docker-compose up --build",
     "docker:down": "docker-compose down",
-    "docker:prod": "docker-compose -f docker-compose.prod.yml up --build -d"
+    "docker:prod": "docker-compose -f docker-compose.prod.yml up --build -d",
+    "docker:logs": "docker-compose logs -f",
+    "docker:clean": "docker-compose down -v",
+    "install:all": "npm install --prefix frontend && cd backend && pip install -r requirements.txt",
+    "lint": "npm run lint --prefix frontend && cd backend && ruff check .",
+    "format": "npm run format --prefix frontend && cd backend && ruff format .",
+    "test": "npm test --prefix frontend -- --run && cd backend && pytest",
+    "build": "npm run build --prefix frontend"
   }
 }

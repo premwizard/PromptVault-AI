@@ -9,15 +9,32 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
 
     # CORS
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
+    BACKEND_CORS_ORIGINS: List[str] = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "https://prompt-vault-ai-omega.vercel.app",
+    ]
 
     @validator("BACKEND_CORS_ORIGINS", pre=True)
-    def assemble_cors_origins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
-        if isinstance(v, str) and not v.startswith("["):
-            return [i.strip() for i in v.split(",")]
-        elif isinstance(v, (list, str)):
-            return v
-        raise ValueError(v)
+    def assemble_cors_origins(cls, v: Union[str, List[str]]) -> List[str]:
+        if isinstance(v, str):
+            if not v.startswith("["):
+                return [i.strip() for i in v.split(",") if i.strip()]
+            import json
+
+            try:
+                parsed = json.loads(v)
+                if isinstance(parsed, list):
+                    return [str(item).strip() for item in parsed]
+            except Exception:
+                return [i.strip() for i in v.split(",") if i.strip()]
+        elif isinstance(v, list):
+            return [str(item).strip() for item in v]
+        return [
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+            "https://prompt-vault-ai-omega.vercel.app",
+        ]
 
     # Postgres Database
     DATABASE_URL: str

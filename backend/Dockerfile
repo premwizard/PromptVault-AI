@@ -48,4 +48,4 @@ USER appuser
 EXPOSE 8000
 
 # Start command
-CMD ["bash", "-c", "alembic upgrade head || true && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["bash", "-c", "(alembic -c alembic.ini upgrade head 2>/dev/null || alembic upgrade head 2>/dev/null || true) && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
