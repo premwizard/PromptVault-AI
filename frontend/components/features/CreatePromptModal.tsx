@@ -83,6 +83,16 @@ export const CreatePromptModal = ({
     e.preventDefault();
     if (!formData.title || !formData.content) return;
 
+    const payload: CreatePromptData = {
+      title: formData.title.trim(),
+      content: formData.content.trim(),
+      description: formData.description ? formData.description.trim() : "",
+      ai_model: formData.ai_model || "ChatGPT",
+      category_id: formData.category_id && formData.category_id !== "" ? formData.category_id : undefined,
+      collection_id: formData.collection_id && formData.collection_id !== "" ? formData.collection_id : undefined,
+      is_favorite: formData.is_favorite,
+    };
+
     const onSuccess = () => {
       onClose();
     };
@@ -93,11 +103,11 @@ export const CreatePromptModal = ({
 
     if (isEditMode && promptToEdit) {
       updatePrompt.mutate(
-        { id: promptToEdit.id, data: formData },
+        { id: promptToEdit.id, data: payload },
         { onSuccess, onError },
       );
     } else {
-      createPrompt.mutate(formData, { onSuccess, onError });
+      createPrompt.mutate(payload, { onSuccess, onError });
     }
   };
 

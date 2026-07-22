@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class UserSettingsBase(BaseModel):
@@ -78,15 +78,35 @@ class CollectionResponse(CollectionBase):
 
     model_config = ConfigDict(from_attributes=True)
 
-
 class PromptBase(BaseModel):
     title: str = Field(..., max_length=255)
-    description: str = Field(..., max_length=1000)
+    description: Optional[str] = Field(default="", max_length=1000)
     content: str
-    ai_model: str
+    ai_model: str = Field(default="ChatGPT")
     status: str = "Published"
     category_id: Optional[UUID] = None
     collection_id: Optional[UUID] = None
+
+    @field_validator("category_id", "collection_id", mode="before")
+    @classmethod
+    def empty_uuid_to_none(cls, v):
+        if not v or v == "" or v == "undefined" or v == "null":
+            return None
+        return v
+
+    @field_validator("ai_model", mode="before")
+    @classmethod
+    def empty_model_to_default(cls, v):
+        if not v or v == "":
+            return "ChatGPT"
+        return v
+
+    @field_validator("description", mode="before")
+    @classmethod
+    def empty_desc_to_str(cls, v):
+        if v is None:
+            return ""
+        return v
 
 
 class PromptCreate(PromptBase):
@@ -101,6 +121,13 @@ class PromptUpdate(BaseModel):
     status: Optional[str] = None
     category_id: Optional[UUID] = None
     collection_id: Optional[UUID] = None
+
+    @field_validator("category_id", "collection_id", mode="before")
+    @classmethod
+    def empty_uuid_to_none(cls, v):
+        if not v or v == "" or v == "undefined" or v == "null":
+            return None
+        return v
 
 
 class PromptResponse(PromptBase):
