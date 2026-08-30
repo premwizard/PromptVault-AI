@@ -79,6 +79,7 @@ export const CreatePromptModal = ({
     }));
   };
 
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.title || !formData.content) return;
