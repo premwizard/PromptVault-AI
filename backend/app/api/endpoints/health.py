@@ -5,6 +5,7 @@ from app.db.session import get_db
 
 router = APIRouter()
 
+
 @router.get("/health")
 async def health_check(db: AsyncSession = Depends(get_db)):
     """

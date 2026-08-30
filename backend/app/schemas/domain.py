@@ -78,6 +78,7 @@ class CollectionResponse(CollectionBase):
 
     model_config = ConfigDict(from_attributes=True)
 
+
 class PromptBase(BaseModel):
     title: str = Field(..., max_length=255)
     description: Optional[str] = Field(default="", max_length=1000)

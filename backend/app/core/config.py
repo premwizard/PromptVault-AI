@@ -1,6 +1,6 @@
 from typing import List, Union
 
-from pydantic import AnyHttpUrl, validator
+from pydantic import validator
 from pydantic_settings import BaseSettings
 
 

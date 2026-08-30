@@ -40,7 +40,7 @@ async def create_prompt(
 
     mock_user_id = uuid.uuid4()
     obj_in_data = prompt_in.model_dump()
-    
+
     prompt = Prompt(**obj_in_data, user_id=mock_user_id)
     db.add(prompt)
     await db.commit()

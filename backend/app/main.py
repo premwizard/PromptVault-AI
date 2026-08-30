@@ -8,6 +8,7 @@ from contextlib import asynccontextmanager
 from app.db.session import engine
 from app.models import Base
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Create all database tables on startup (bypasses need for Alembic in simple SQLite setups)
@@ -15,14 +16,19 @@ async def lifespan(app: FastAPI):
         await conn.run_sync(Base.metadata.create_all)
     yield
 
+
 app = FastAPI(
-    title=settings.PROJECT_NAME, 
+    title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 # Set all CORS enabled origins
-cors_origins = [str(o).rstrip("/") for o in settings.BACKEND_CORS_ORIGINS] if settings.BACKEND_CORS_ORIGINS else []
+cors_origins = (
+    [str(o).rstrip("/") for o in settings.BACKEND_CORS_ORIGINS]
+    if settings.BACKEND_CORS_ORIGINS
+    else []
+)
 if "https://prompt-vault-ai-omega.vercel.app" not in cors_origins:
     cors_origins.append("https://prompt-vault-ai-omega.vercel.app")
 if "http://localhost:3000" not in cors_origins:
