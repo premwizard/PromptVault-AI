@@ -1,13 +1,11 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
 import { Plus, FolderOpen } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/button";
 import { useCollections } from "@/lib/hooks/useCollections";
 import { ANIMATIONS } from "@/lib/constants";
-import * as Icons from "lucide-react";
 
 const containerVariants = {
   hidden: { opacity: 0 },
