@@ -74,7 +74,7 @@ test-backend: ## Run backend tests with pytest
 	cd backend && pytest
 
 test-frontend: ## Run frontend tests with vitest
-	cd frontend && npm test -- --run
+	cd frontend && npm test
 
 # ------------------------------------------------------------------------------
 # Code Quality & Linting

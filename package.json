@@ -14,7 +14,7 @@
     "install:all": "npm install --prefix frontend && cd backend && pip install -r requirements.txt",
     "lint": "npm run lint --prefix frontend && cd backend && ruff check .",
     "format": "npm run format --prefix frontend && cd backend && ruff format .",
-    "test": "npm test --prefix frontend -- --run && cd backend && pytest",
+    "test": "npm test --prefix frontend && cd backend && pytest",
     "build": "npm run build --prefix frontend"
   }
 }

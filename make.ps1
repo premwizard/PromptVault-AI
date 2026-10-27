@@ -77,13 +77,13 @@ switch ($Target.ToLower()) {
     }
     "test" {
         Push-Location backend; pytest; Pop-Location
-        Push-Location frontend; npm test -- --run; Pop-Location
+        Push-Location frontend; npm test; Pop-Location
     }
     "test-backend" {
         Push-Location backend; pytest; Pop-Location
     }
     "test-frontend" {
-        Push-Location frontend; npm test -- --run; Pop-Location
+        Push-Location frontend; npm test; Pop-Location
     }
     "lint" {
         Push-Location backend; ruff check .; Pop-Location

@@ -107,7 +107,7 @@ cd /d "%~dp0backend" && alembic downgrade -1
 goto end
 
 :test
-cd /d "%~dp0backend" && pytest && cd /d "%~dp0frontend" && npm test -- --run
+cd /d "%~dp0backend" && pytest && cd /d "%~dp0frontend" && npm test
 goto end
 
 :test_backend
@@ -115,7 +115,7 @@ cd /d "%~dp0backend" && pytest
 goto end
 
 :test_frontend
-cd /d "%~dp0frontend" && npm test -- --run
+cd /d "%~dp0frontend" && npm test
 goto end
 
 :lint
