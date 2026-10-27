@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Search, Filter, Plus, PenLine } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
