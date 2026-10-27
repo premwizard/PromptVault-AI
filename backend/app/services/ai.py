@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from app.core.config import settings
 
 # Initialize instructor with OpenAI async client
-# You can swap out the client for other providers (e.g. Anthropic) if they support OpenAI compat
+# Swap client for other providers (e.g. Anthropic) if they support OpenAI compat
 client = instructor.patch(AsyncOpenAI(api_key=settings.OPENAI_API_KEY))
 
 
@@ -28,7 +28,7 @@ class AIService:
     @staticmethod
     async def generate_text(prompt: str, options: AIProviderOptions) -> str:
         # Instructor text generation
-        # NOTE: This uses OpenAI format, in real implementation we map 'provider' to the correct client
+        # Uses OpenAI format; map 'provider' to the correct client as needed
         response = await client.chat.completions.create(
             model=options.model,
             messages=[{"role": "user", "content": prompt}],

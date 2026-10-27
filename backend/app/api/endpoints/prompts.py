@@ -1,4 +1,5 @@
-from typing import Any, List
+import uuid
+from typing import Any
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -6,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud import prompt as crud_prompt
 from app.dependencies.db import get_db
+from app.models.prompt import Prompt
 from app.schemas.domain import PromptCreate, PromptResponse, PromptUpdate
 
 router = APIRouter()
@@ -13,7 +15,7 @@ router = APIRouter()
 # TODO: Add current_user dependency to endpoints
 
 
-@router.get("", response_model=List[PromptResponse])
+@router.get("", response_model=list[PromptResponse])
 async def read_prompts(
     db: AsyncSession = Depends(get_db),
     skip: int = Query(0, ge=0),
@@ -35,9 +37,6 @@ async def create_prompt(
     """
     Create new prompt.
     """
-    import uuid
-    from app.models.prompt import Prompt
-
     mock_user_id = uuid.uuid4()
     obj_in_data = prompt_in.model_dump()
 

@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
@@ -19,9 +18,9 @@ class UserSettingsResponse(UserSettingsBase):
 
 
 class UserBase(BaseModel):
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    profile_image_url: Optional[str] = None
+    first_name: str | None = None
+    last_name: str | None = None
+    profile_image_url: str | None = None
 
 
 class UserCreate(UserBase):
@@ -36,16 +35,16 @@ class UserResponse(UserBase):
     username: str
     created_at: datetime
     updated_at: datetime
-    settings: Optional[UserSettingsResponse] = None
+    settings: UserSettingsResponse | None = None
 
     model_config = ConfigDict(from_attributes=True)
 
 
 class CategoryBase(BaseModel):
     name: str
-    color: Optional[str] = None
-    icon: Optional[str] = None
-    order: Optional[int] = None
+    color: str | None = None
+    icon: str | None = None
+    order: int | None = None
 
 
 class CategoryCreate(CategoryBase):
@@ -62,7 +61,7 @@ class CategoryResponse(CategoryBase):
 
 class CollectionBase(BaseModel):
     name: str
-    description: Optional[str] = None
+    description: str | None = None
     is_public: bool = False
 
 
@@ -81,12 +80,12 @@ class CollectionResponse(CollectionBase):
 
 class PromptBase(BaseModel):
     title: str = Field(..., max_length=255)
-    description: Optional[str] = Field(default="", max_length=1000)
+    description: str | None = Field(default="", max_length=1000)
     content: str
     ai_model: str = Field(default="ChatGPT")
     status: str = "Published"
-    category_id: Optional[UUID] = None
-    collection_id: Optional[UUID] = None
+    category_id: UUID | None = None
+    collection_id: UUID | None = None
 
     @field_validator("category_id", "collection_id", mode="before")
     @classmethod
@@ -115,13 +114,13 @@ class PromptCreate(PromptBase):
 
 
 class PromptUpdate(BaseModel):
-    title: Optional[str] = Field(None, max_length=255)
-    description: Optional[str] = Field(None, max_length=1000)
-    content: Optional[str] = None
-    ai_model: Optional[str] = None
-    status: Optional[str] = None
-    category_id: Optional[UUID] = None
-    collection_id: Optional[UUID] = None
+    title: str | None = Field(None, max_length=255)
+    description: str | None = Field(None, max_length=1000)
+    content: str | None = None
+    ai_model: str | None = None
+    status: str | None = None
+    category_id: UUID | None = None
+    collection_id: UUID | None = None
 
     @field_validator("category_id", "collection_id", mode="before")
     @classmethod
@@ -137,6 +136,6 @@ class PromptResponse(PromptBase):
     usage_count: int
     created_at: datetime
     updated_at: datetime
-    # We omit embeddings from standard response
+    # embeddings omitted from standard response
 
     model_config = ConfigDict(from_attributes=True)

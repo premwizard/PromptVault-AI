@@ -1,7 +1,7 @@
-from typing import List, Union
+import json
 
-from pydantic import validator
-from pydantic_settings import BaseSettings
+from pydantic import field_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -9,19 +9,18 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
 
     # CORS
-    BACKEND_CORS_ORIGINS: List[str] = [
+    BACKEND_CORS_ORIGINS: list[str] = [
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         "https://prompt-vault-ai-omega.vercel.app",
     ]
 
-    @validator("BACKEND_CORS_ORIGINS", pre=True)
-    def assemble_cors_origins(cls, v: Union[str, List[str]]) -> List[str]:
+    @field_validator("BACKEND_CORS_ORIGINS", mode="before")
+    @classmethod
+    def assemble_cors_origins(cls, v: str | list[str]) -> list[str]:
         if isinstance(v, str):
             if not v.startswith("["):
                 return [i.strip() for i in v.split(",") if i.strip()]
-            import json
-
             try:
                 parsed = json.loads(v)
                 if isinstance(parsed, list):
@@ -36,8 +35,8 @@ class Settings(BaseSettings):
             "https://prompt-vault-ai-omega.vercel.app",
         ]
 
-    # Postgres Database
-    DATABASE_URL: str
+    # Database
+    DATABASE_URL: str = "sqlite+aiosqlite:///./promptvault.db"
 
     # Authentication
     SECRET_KEY: str = "your-super-secret-key-change-me"
@@ -47,9 +46,11 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = ""
     ANTHROPIC_API_KEY: str = ""
 
-    class Config:
-        case_sensitive = True
-        env_file = ".env"
+    model_config = SettingsConfigDict(
+        case_sensitive=True,
+        env_file=".env",
+        extra="ignore",
+    )
 
 
 settings = Settings()  # type: ignore

@@ -11,7 +11,8 @@ from app.models import Base
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Create all database tables on startup (bypasses need for Alembic in simple SQLite setups)
+    # Create all database tables on startup
+    # (bypasses need for Alembic in simple SQLite setups)
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     yield
