@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Bell, Lock, Palette, Database } from "lucide-react";
+import { Bell, Palette, Database } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/button";
 import { ANIMATIONS } from "@/lib/constants";

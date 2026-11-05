@@ -1,6 +1,6 @@
-from typing import Any, List
-from uuid import UUID
 import uuid
+from typing import Any
+from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
@@ -13,7 +13,7 @@ from app.schemas.domain import CollectionCreate, CollectionResponse
 router = APIRouter()
 
 
-@router.get("", response_model=List[CollectionResponse])
+@router.get("", response_model=list[CollectionResponse])
 async def read_collections(
     db: AsyncSession = Depends(get_db),
     skip: int = 0,

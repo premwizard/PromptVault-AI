@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import { Modal } from "@/components/ui/Modal";
@@ -88,8 +88,14 @@ export const CreatePromptModal = ({
       content: formData.content.trim(),
       description: formData.description ? formData.description.trim() : "",
       ai_model: formData.ai_model || "ChatGPT",
-      category_id: formData.category_id && formData.category_id !== "" ? formData.category_id : undefined,
-      collection_id: formData.collection_id && formData.collection_id !== "" ? formData.collection_id : undefined,
+      category_id:
+        formData.category_id && formData.category_id !== ""
+          ? formData.category_id
+          : undefined,
+      collection_id:
+        formData.collection_id && formData.collection_id !== ""
+          ? formData.collection_id
+          : undefined,
       is_favorite: formData.is_favorite,
     };
 

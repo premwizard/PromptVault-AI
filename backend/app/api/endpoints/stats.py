@@ -1,4 +1,5 @@
-from typing import Any, Dict
+from typing import Any
+
 from fastapi import APIRouter, Depends
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -9,7 +10,7 @@ from app.models.prompt import Prompt
 router = APIRouter()
 
 
-@router.get("", response_model=Dict[str, Any])
+@router.get("", response_model=dict[str, Any])
 async def get_dashboard_stats(
     db: AsyncSession = Depends(get_db),
 ) -> Any:

@@ -10,13 +10,6 @@ export const getAccessToken = (): string | null => {
   return null;
 };
 
-const getRefreshToken = (): string | null => {
-  if (typeof window !== "undefined") {
-    return localStorage.getItem(REFRESH_TOKEN_KEY);
-  }
-  return null;
-};
-
 export const setTokens = (accessToken: string, refreshToken?: string) => {
   if (typeof window !== "undefined") {
     localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
@@ -31,8 +24,4 @@ export const removeTokens = () => {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
     localStorage.removeItem(REFRESH_TOKEN_KEY);
   }
-};
-
-const isAuthenticated = (): boolean => {
-  return !!getAccessToken();
 };

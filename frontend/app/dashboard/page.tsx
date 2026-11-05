@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
 import { Sparkles, TrendingUp, Heart, Zap } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
